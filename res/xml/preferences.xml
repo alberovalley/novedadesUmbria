@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+     <PreferenceCategory
+            android:title="Datos de Acceso">
+            <EditTextPreference
+                android:key="edittext_usuario"
+                android:title="Nombre de Usuario"
+                android:summary="Nombre de usuario"
+                android:dialogTitle="Introduzca el nombre de usuario" />
+            <EditTextPreference
+                android:key="edittext_password"
+                android:title="Contraseña"
+                android:summary="Contraseña"
+                android:dialogTitle="Introduzca la contraseña" />
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="Preferencias de Aviso">
+            <CheckBoxPreference
+                android:key="cb_msg_Jugador"
+                android:title="Mensajes como Jugador"
+                android:summary="Recibir aviso cuando haya nuevos mensajes en partidas en las que seas jugador"
+                 />
+            <CheckBoxPreference
+                android:key="cb_msg_Narrador"
+                android:title="Mensajes como Narrador"
+                android:summary="Recibir aviso cuando haya nuevos mensajes en partidas en las que seas narrador"
+                 />
+            <CheckBoxPreference
+                android:key="cb_msg_VIP"
+                android:title="Mensajes como VIP"
+                android:summary="Recibir aviso cuando haya nuevos mensajes en partidas en las que tengas permisos de VIP"
+                 />
+            <CheckBoxPreference
+                android:key="cb_msg_Privado"
+                android:title="Mensajes Privados Recibidos"
+                android:summary="Recibir aviso cuando reciba nuevos mensajes privados"
+                 />
+    </PreferenceCategory>
+</PreferenceScreen>
