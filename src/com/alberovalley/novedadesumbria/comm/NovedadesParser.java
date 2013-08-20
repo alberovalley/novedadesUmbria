@@ -34,21 +34,43 @@ public class NovedadesParser {
         return numericalId;
     }
 
+    public static int findPrivateMessages(String html) {
+        Log.d("novUmbria", "findPrivateMessages ");
+        int msg = 0;
+
+        final String tag = "Mensajes privados\"><span>";
+        int indexOfTag = html.lastIndexOf(tag) + tag.length();
+        if (indexOfTag > 0) {
+            String substring = html.substring(indexOfTag, indexOfTag + 1);
+            // String substring = html.substring(indexOfTag, indexOfTag + 1);
+            msg = Integer.parseInt(substring);
+        } else {
+            Log.w("novUmbria", "findPrivateMessages indexOfTag <=0 ");
+        }
+        return msg;
+    }
+
     public static int findMessageByTag(String html, String tag) {
         Log.d("novUmbria", "findMessageByTag tag: " + tag);
         int msg = 0;
         int indexOfTag = html.lastIndexOf(tag);
-        if (indexOfTag > 0) {
-            String substring = html.substring(indexOfTag);
-            Log.d("novUmbria", "findMessageByTag substring: " + substring);
-            if (substring.lastIndexOf(NO_MSG_TAG) == -1) {
-                // no aparece <p>No hay novedades</p>, señal de que sí hay mensajes
-                msg = 1;
-            }
-            Log.d("novUmbria", "findMessageByTag resultado: " + msg);
-        } else {
+        String substring = html.substring(indexOfTag + tag.length(), indexOfTag + (3 * tag.length()));
+        Log.d("novUmbria", "findMessageByTag substring: " + substring);
+        indexOfTag = substring.lastIndexOf(NO_MSG_TAG);
+        Log.d("novUmbria", "findMessageByTag indexOfTag: " + indexOfTag);
+        switch (indexOfTag) {
+        case -1:
+            // sí hay mensaje
+            Log.d("novUmbria", "findMessageByTag hay mensaje: ");
+            msg = 1;
+            break;
+        default:
+            // no hay mensaje
+            msg = 0;
+            Log.d("novUmbria", "findMessageByTag no hay mensaje: ");
 
         }
+
         return msg;
 
     }

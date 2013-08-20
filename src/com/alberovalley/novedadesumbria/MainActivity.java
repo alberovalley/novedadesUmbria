@@ -70,6 +70,7 @@ public class MainActivity extends Activity implements UmbriaConnectionListener {
     }
 
     public void connectToUmbria(View v) {
+        textview1.setText("Conectando...");
         LoginData ld = new LoginData();
         ld.userName = user;
         ld.password = pass;
@@ -90,6 +91,8 @@ public class MainActivity extends Activity implements UmbriaConnectionListener {
                 text += "Hay mensajes en partidas dónde eres Narrador.\n";
             if (data.getVipMessages() > 0)
                 text += "Hay mensajes en partidas dónde eres VIP.\n";
+            if (data.getPrivateMessages() > 0)
+                text += "Tienes mensajes privados pendientes de leer.\n";
 
             if (text.equalsIgnoreCase(""))
                 text = "No hay mensajes nuevos en ninguna de las partidas en las que estás registrado";

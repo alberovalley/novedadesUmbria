@@ -2,6 +2,8 @@ package com.alberovalley.novedadesumbria.comm;
 
 public class UmbriaData {
 
+    protected String numericalId = "";
+    protected int privateMessages = 0;
     protected int storytellerMessages = 0;
     protected int playerMessages = 0;
     protected int vipMessages = 0;
@@ -40,4 +42,21 @@ public class UmbriaData {
     public boolean isThereError() {
         return this.errorFlag;
     }
+
+    public String getNumericalId() {
+        return numericalId;
+    }
+
+    public void setNumericalId(String numericalId) {
+        this.numericalId = numericalId;
+    }
+
+    public int getPrivateMessages() {
+        return privateMessages;
+    }
+
+    public void setPrivateMessages(int privateMessages) {
+        this.privateMessages = privateMessages;
+    }
+
 }
