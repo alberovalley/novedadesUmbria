@@ -11,19 +11,19 @@ public class NovedadesParser {
     public static final String NO_MSG_TAG = "<p>No hay novedades</p>";
 
     public static int findStorytellerMessages(String html) {
-        Log.d("novUmbria", "findStorytellerMessages ");
+        Log.d("novUmbria", "NovedadesParser.findStorytellerMessages ");
         return findMessageByTag(html, STORYTELLER_TAG);
 
     }
 
     public static int findPlayerMessages(String html) {
-        Log.d("novUmbria", "findPlayerMessages");
+        Log.d("novUmbria", "NovedadesParser.findPlayerMessages");
         return findMessageByTag(html, PLAYER_TAG);
 
     }
 
     public static int findVIPMessages(String html) {
-        Log.d("novUmbria", "findVIPMessages");
+        Log.d("novUmbria", "NovedadesParser.findVIPMessages");
         return findMessageByTag(html, VIP_TAG);
 
     }
@@ -35,14 +35,17 @@ public class NovedadesParser {
     }
 
     public static int findPrivateMessages(String html) {
-        Log.d("novUmbria", "findPrivateMessages ");
+        Log.d("novUmbria", "NovedadesParser.findPrivateMessages ");
         int msg = 0;
-
-        final String tag = "Mensajes privados\"><span>";
+        Log.w("novUmbria", "findPrivateMessages html" + html);
+        final String tag = "title=\"Mensajes privados\"><span>";
         int indexOfTag = html.lastIndexOf(tag) + tag.length();
         if (indexOfTag > 0) {
-            String substring = html.substring(indexOfTag, indexOfTag + 1);
+            String substring = html.substring(
+                    indexOfTag, indexOfTag + 1
+                    );
             // String substring = html.substring(indexOfTag, indexOfTag + 1);
+            Log.w("novUmbria", "findPrivateMessages substring  " + substring);
             msg = Integer.parseInt(substring);
         } else {
             Log.w("novUmbria", "findPrivateMessages indexOfTag <=0 ");
