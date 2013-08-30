@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="widget_label">Novedades Umbría</string>
+    <string name="miniwidget_label">Novedades Umbría Mini</string>
     <string name="boton_comprobar">Comprobar Novedades</string>
     <string name="boton_navegar">Ir a Novedades</string>
 

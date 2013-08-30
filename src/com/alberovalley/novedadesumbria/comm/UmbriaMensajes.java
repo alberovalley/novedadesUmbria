@@ -4,6 +4,24 @@ import android.util.Log;
 
 public class UmbriaMensajes {
 
+    public static boolean isThereAnythingNew(UmbriaData data) throws UmbriaConnectionException {
+        boolean somethingNew = false;
+
+        if (!data.isThereError()) {
+            somethingNew =
+                    (data.getPlayerMessages() +
+                            data.getStorytellerMessages() +
+                            data.getVipMessages() +
+                    data.getPrivateMessages()
+                    ) != 0;
+        } else {
+            // hay errores
+            throw new UmbriaConnectionException(data.getErrorMessage());
+        }
+
+        return somethingNew;
+    }
+
     public static String connectionReceived(UmbriaData data) {
         String message = "Conexión Recibida";
         Log.d("novUmbria", "NovedadesWidgetProvider.connectionReceived: ");
