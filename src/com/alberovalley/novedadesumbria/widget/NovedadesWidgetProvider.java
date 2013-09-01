@@ -1,8 +1,5 @@
 package com.alberovalley.novedadesumbria.widget;
 
-import java.util.Calendar;
-
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -17,17 +14,15 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
-import com.alberovalley.novedadesumbria.SettingsActivity;
-import com.alberovalley.novedadesumbria.comm.LoginData;
-import com.alberovalley.novedadesumbria.comm.UmbriaConnection;
 import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaMensajes;
 import com.alberovalley.novedadesumbria.service.NotificadorService;
+import com.alberovalley.novedadesumbria.service.task.TaskManager;
 
 public class NovedadesWidgetProvider extends AppWidgetProvider {
 
     public static String WIDGET_UPDATE = "com.alberovalley.novedadesumbria.widget";
-    private static final String ACTION_CLICK = "ACTION_CLICK";
+    // private static final String ACTION_CLICK = "ACTION_CLICK";
     RemoteViews views;
 
     private int SECONDS = 15 * 60;// 15 minutos
@@ -56,10 +51,9 @@ public class NovedadesWidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.tvRespuestaUmbria, "Buscando... ");
 
             // Crea un Intent para lanzar el navegador
-            // Intent navegaIntent = new Intent(context, NovedadesUmbriaWidgetActivity.class);
 
             Intent navegaIntent = new Intent(Intent.ACTION_VIEW);
-            navegaIntent.setData(Uri.parse(NotificadorService.URL_NOVEDADES));
+            navegaIntent.setData(Uri.parse(TaskManager.URL_NOVEDADES));
             PendingIntent pendingIntentNavega = PendingIntent.getActivity(context, 0, navegaIntent, 0);
             views.setOnClickPendingIntent(R.id.btNavegaNovedades,
                     pendingIntentNavega);
@@ -67,7 +61,6 @@ public class NovedadesWidgetProvider extends AppWidgetProvider {
             // actualizar onDemand (onClick)
             views.setOnClickPendingIntent(R.id.btCompruebaNovedades,
                     updateWidgetIntent(context));
-            // views.setOnClickPendingIntent(R.id.btCompruebaNovedades,updateWidgetIntent(context));
 
             // Le dice al AppWidgetManager que realice una actualización al widget actual
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -97,18 +90,19 @@ public class NovedadesWidgetProvider extends AppWidgetProvider {
 
         // El Widget Provider está habilitado, iniciamos el temporizador para
         // actualizar el widget cada 15 minutos
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        // calendar.add(Calendar.MINUTE, 15);
-        calendar.add(Calendar.MINUTE, 1);
-        Log.d("novUmbria", "NovedadesWidgetProvider.onEnabled alarmManager hora: " + calendar.getTime().getHours() + ":"
-                + calendar.getTime().getMinutes());
-        alarmManager.setRepeating(
-                AlarmManager.RTC,
-                calendar.getTimeInMillis(),
-                SECONDS * 1000 // tiempo para que se repita
-                , updateWidgetIntent(context));
+        /*
+         * AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+         * Calendar calendar = Calendar.getInstance();
+         * calendar.setTimeInMillis(System.currentTimeMillis());
+         * calendar.add(Calendar.MINUTE, 1);
+         * Log.d("novUmbria", "NovedadesWidgetProvider.onEnabled alarmManager hora: " + calendar.getTime().getHours() + ":"
+         * + calendar.getTime().getMinutes());
+         * alarmManager.setRepeating(
+         * AlarmManager.RTC,
+         * calendar.getTimeInMillis(),
+         * SECONDS * 1000 // tiempo para que se repita
+         * , updateWidgetIntent(context));
+         */
 
     }
 
@@ -116,24 +110,29 @@ public class NovedadesWidgetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         super.onDisabled(context);
         // El Widget Provider está deshabilitado, apagamos el temporizador
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(updateWidgetIntent(context));
+        /*
+         * AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+         * alarmManager.cancel(updateWidgetIntent(context));
+         */
     }
 
-    private void showSettings(Context context) {
-        // getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
-        Intent intent = new Intent(context, SettingsActivity.class);
-        context.startActivity(intent);
-    }
-
-    public void connectToUmbria(String user, String pass) {
-        // textview1.setText("Conectando...");
-        LoginData ld = new LoginData(user, pass);
-
-        UmbriaConnection uc = new UmbriaConnection();
-        // uc.setListener(this);
-        uc.execute(ld);
-    }
+    /*
+     * private void showSettings(Context context) {
+     * // getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
+     * Intent intent = new Intent(context, SettingsActivity.class);
+     * context.startActivity(intent);
+     * }
+     */
+    /*
+     * public void connectToUmbria(String user, String pass) {
+     * // textview1.setText("Conectando...");
+     * LoginData ld = new LoginData(user, pass);
+     * 
+     * UmbriaConnection uc = new UmbriaConnection();
+     * // uc.setListener(this);
+     * uc.execute(ld);
+     * }
+     */
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 

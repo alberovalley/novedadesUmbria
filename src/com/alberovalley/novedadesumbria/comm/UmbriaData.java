@@ -13,6 +13,11 @@ public class UmbriaData implements Parcelable {
     protected boolean errorFlag = false;
     protected String errorMessage = "";
 
+    protected boolean notifyPrivateMessages = false;
+    protected boolean notifyStorytellerMessages = false;
+    protected boolean notifyPlayerMessages = false;
+    protected boolean notifyVipMessages = false;
+
     public UmbriaData(Parcel in) {
         readFromParcel(in);
     }
@@ -82,6 +87,38 @@ public class UmbriaData implements Parcelable {
         return 0;
     }
 
+    public boolean isNotifyPrivateMessages() {
+        return notifyPrivateMessages;
+    }
+
+    public void setNotifyPrivateMessages(boolean notifyPrivateMessages) {
+        this.notifyPrivateMessages = notifyPrivateMessages;
+    }
+
+    public boolean isNotifyStorytellerMessages() {
+        return notifyStorytellerMessages;
+    }
+
+    public void setNotifyStorytellerMessages(boolean notifyStorytellerMessages) {
+        this.notifyStorytellerMessages = notifyStorytellerMessages;
+    }
+
+    public boolean isNotifyPlayerMessages() {
+        return notifyPlayerMessages;
+    }
+
+    public void setNotifyPlayerMessages(boolean notifyPlayerMessages) {
+        this.notifyPlayerMessages = notifyPlayerMessages;
+    }
+
+    public boolean isNotifyVipMessages() {
+        return notifyVipMessages;
+    }
+
+    public void setNotifyVipMessages(boolean notifyVipMessages) {
+        this.notifyVipMessages = notifyVipMessages;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(numericalId);
@@ -92,6 +129,16 @@ public class UmbriaData implements Parcelable {
         int intErrorFlag = errorFlag ? 1 : 0;
         dest.writeInt(intErrorFlag);
         dest.writeString(errorMessage);
+
+        int iNotifyPrivateMessages = notifyPrivateMessages ? 1 : 0;
+        dest.writeInt(iNotifyPrivateMessages);
+        int iNotifyStorytellerMessages = notifyStorytellerMessages ? 1 : 0;
+        dest.writeInt(iNotifyStorytellerMessages);
+        int iNotifyPlayerMessages = notifyPlayerMessages ? 1 : 0;
+        dest.writeInt(iNotifyPlayerMessages);
+        int iNotifyVipMessages = notifyVipMessages ? 1 : 0;
+        dest.writeInt(iNotifyVipMessages);
+
     }
 
     private void readFromParcel(Parcel in) {
@@ -103,6 +150,16 @@ public class UmbriaData implements Parcelable {
         int intErrorFlag = in.readInt();
         errorFlag = intErrorFlag == 1;
         errorMessage = in.readString();
+
+        int iNotifyPrivateMessages = in.readInt();
+        notifyPrivateMessages = iNotifyPrivateMessages == 1;
+        int iNotifyStorytellerMessages = in.readInt();
+        notifyStorytellerMessages = iNotifyStorytellerMessages == 1;
+        int iNotifyPlayerMessages = in.readInt();
+        notifyPlayerMessages = iNotifyPlayerMessages == 1;
+        int iNotifyVipMessages = in.readInt();
+        notifyVipMessages = iNotifyVipMessages == 1;
+
     }
 
     public static final Parcelable.Creator<UmbriaData> CREATOR = new Parcelable.Creator<UmbriaData>() {

@@ -20,6 +20,7 @@ import com.alberovalley.novedadesumbria.comm.UmbriaConnectionException;
 import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaMensajes;
 import com.alberovalley.novedadesumbria.service.NotificadorService;
+import com.alberovalley.novedadesumbria.service.task.TaskManager;
 
 public class MiniNovedadesWidgetProvider extends AppWidgetProvider {
 
@@ -41,19 +42,15 @@ public class MiniNovedadesWidgetProvider extends AppWidgetProvider {
             // inicio servicio
             Intent serviceIntent = new Intent(context, NotificadorService.class);
             // se pueden añadir extras al intent
-            // context.startService(serviceIntent);
-            // Log.d("novUmbria", "MiniNovedadesWidgetProvider.onUpdate: inicia el SERVICIO ");
             int appWidgetId = appWidgetIds[i];
 
             // Obtiene el layout para el App Widget y le asigna un on-click listener al botón
             views = new RemoteViews(context.getPackageName(), R.layout.miniwidget);
-            // views.setTextViewText(R.id.tvRespuestaUmbria, "Buscando... ");
 
             // Crea un Intent para lanzar el navegador
-            // Intent navegaIntent = new Intent(context, NovedadesUmbriaWidgetActivity.class);
 
             Intent navegaIntent = new Intent(Intent.ACTION_VIEW);
-            navegaIntent.setData(Uri.parse(NotificadorService.URL_NOVEDADES));
+            navegaIntent.setData(Uri.parse(TaskManager.URL_NOVEDADES));
 
             PendingIntent pendingIntentNavega = PendingIntent.getActivity(context, 0, navegaIntent, 0);
             views.setOnClickPendingIntent(R.id.mini_image,
@@ -64,22 +61,24 @@ public class MiniNovedadesWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private PendingIntent updateWidgetIntent(Context context) {
-        Log.v("novUmbria", "MiniNovedadesWidgetProvider.updateWidgetIntent ");
-
-        Intent intent = new Intent(context, MiniNovedadesWidgetProvider.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-        ComponentName thisWidget = new ComponentName(context.getApplicationContext(), MiniNovedadesWidgetProvider.class);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
-    }
+    /*
+     * private PendingIntent updateWidgetIntent(Context context) {
+     * Log.v("novUmbria", "MiniNovedadesWidgetProvider.updateWidgetIntent ");
+     * 
+     * Intent intent = new Intent(context, MiniNovedadesWidgetProvider.class);
+     * intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+     * 
+     * AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+     * ComponentName thisWidget = new ComponentName(context.getApplicationContext(), MiniNovedadesWidgetProvider.class);
+     * int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+     * 
+     * intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+     * 
+     * PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+     * 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+     * return pendingIntent;
+     * }
+     */
 
     @Override
     public void onEnabled(Context context) {
@@ -92,11 +91,11 @@ public class MiniNovedadesWidgetProvider extends AppWidgetProvider {
     }
 
     public void connectToUmbria(String user, String pass) {
-        // textview1.setText("Conectando...");
+
         LoginData ld = new LoginData(user, pass);
 
         UmbriaConnection uc = new UmbriaConnection();
-        // uc.setListener(this);
+
         uc.execute(ld);
     }
 
@@ -122,8 +121,10 @@ public class MiniNovedadesWidgetProvider extends AppWidgetProvider {
                 try {
                     if (UmbriaMensajes.isThereAnythingNew(data)) {
                         miniIcon = R.drawable.ic_mini_widget_on;
+                        Log.v("novUmbria", "MiniNovedadesWidgetProvider.BroadcastReceiver hay Novedades");
                     } else {
                         miniIcon = R.drawable.ic_mini_widget_off;
+                        Log.v("novUmbria", "MiniNovedadesWidgetProvider.BroadcastReceiver NO hay Novedades");
                     }
                 } catch (UmbriaConnectionException e) {
                     miniIcon = R.drawable.ic_mini_widget_error;

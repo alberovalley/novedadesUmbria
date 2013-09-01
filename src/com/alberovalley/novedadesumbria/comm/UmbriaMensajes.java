@@ -27,13 +27,13 @@ public class UmbriaMensajes {
         Log.d("novUmbria", "NovedadesWidgetProvider.connectionReceived: ");
         if (!data.isThereError()) {
             message = "";
-            if (data.getPlayerMessages() > 0)
+            if (data.notifyPlayerMessages && data.getPlayerMessages() > 0)
                 message += "Hay mensajes en Jugador.\n";
-            if (data.getStorytellerMessages() > 0)
+            if (data.notifyStorytellerMessages && data.getStorytellerMessages() > 0)
                 message += "Hay mensajes en Narrador.\n";
-            if (data.getVipMessages() > 0)
+            if (data.notifyVipMessages && data.getVipMessages() > 0)
                 message += "Hay mensajes en VIP.\n";
-            if (data.getPrivateMessages() > 0)
+            if (data.notifyPrivateMessages && data.getPrivateMessages() > 0)
                 message += "Tienes mensajes privados.\n";
 
             if (message.equalsIgnoreCase(""))
