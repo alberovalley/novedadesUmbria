@@ -22,7 +22,7 @@ public class UmbriaMensajes {
         return somethingNew;
     }
 
-    public static String connectionReceived(UmbriaData data) {
+    public static String makeNotificationText(UmbriaData data) {
         String message = "Conexión Recibida";
         Log.d("novUmbria", "NovedadesWidgetProvider.connectionReceived: ");
         if (!data.isThereError()) {

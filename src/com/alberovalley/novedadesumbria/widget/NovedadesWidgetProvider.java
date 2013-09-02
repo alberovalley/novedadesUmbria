@@ -39,11 +39,13 @@ public class NovedadesWidgetProvider extends AppWidgetProvider {
                     .registerReceiver(receiver, new IntentFilter(NotificadorService.NOTIFICATION));
 
             Log.v("novUmbria", "NovedadesWidgetProvider.onUpdate widget nº: " + i);
-            // inicio servicio
-            Intent serviceIntent = new Intent(context, NotificadorService.class);
-            // se pueden añadir extras al intent
-            context.startService(serviceIntent);
-            Log.d("novUmbria", "NovedadesWidgetProvider.onUpdate: inicia el SERVICIO ");
+            /*
+             * // inicio servicio
+             * Intent serviceIntent = new Intent(context, NotificadorService.class);
+             * // se pueden añadir extras al intent
+             * context.startService(serviceIntent);
+             * Log.d("novUmbria", "NovedadesWidgetProvider.onUpdate: inicia el SERVICIO ");
+             */
             int appWidgetId = appWidgetIds[i];
 
             // Obtiene el layout para el App Widget y le asigna un on-click listener al botón
@@ -156,7 +158,7 @@ public class NovedadesWidgetProvider extends AppWidgetProvider {
                     for (int widgetId : appWidgetIds) {
                         views = new RemoteViews(context.getPackageName(), R.layout.widget1);
                         Log.v("novUmbria", "NovedadesWidgetProvider.BroadcastReceiver actualiza vista remota ");
-                        views.setTextViewText(R.id.tvRespuestaUmbria, UmbriaMensajes.connectionReceived(data));
+                        views.setTextViewText(R.id.tvRespuestaUmbria, UmbriaMensajes.makeNotificationText(data));
                         appWidgetManager.updateAppWidget(widgetId, views);
 
                     }
