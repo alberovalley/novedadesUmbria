@@ -14,8 +14,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
-import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaMensajes;
+import com.alberovalley.novedadesumbria.data.UmbriaData;
 import com.alberovalley.novedadesumbria.service.NotificadorService;
 import com.alberovalley.novedadesumbria.service.task.TaskManager;
 

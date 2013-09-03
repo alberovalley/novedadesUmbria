@@ -19,6 +19,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
+import com.alberovalley.novedadesumbria.data.UmbriaData;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -79,11 +81,14 @@ public class UmbriaConnection extends AsyncTask<LoginData, Void, UmbriaData> {
 
                 html = builder.toString();
                 Log.d("novUmbria", "UmbriaConnection.doInBackground respuesta recibida: " + html);
-                // TODO parseo
-                umbriadata.setPlayerMessages(NovedadesParser.findPlayerMessages(html));
-                umbriadata.setStorytellerMessages(NovedadesParser.findStorytellerMessages(html));
-                umbriadata.setVipMessages(NovedadesParser.findVIPMessages(html));
-                umbriadata.setPrivateMessages(NovedadesParser.findPrivateMessages(html));
+                
+
+                // TODO parseo --> 1 step
+                umbriadata = NovedadesParser.ParseData(html);
+                //umbriadata.setPlayerMessages(NovedadesParser.findPlayerMessages(html));
+                //umbriadata.setStorytellerMessages(NovedadesParser.findStorytellerMessages(html));
+                //umbriadata.setVipMessages(NovedadesParser.findVIPMessages(html));
+                //umbriadata.setPrivateMessages(NovedadesParser.findPrivateMessages(html));
             } else {
                 umbriadata.flagError("Respuesta incorrecta ");
                 Log.i("novUmbria", "Respuesta incorrecta: " + statusCode);
