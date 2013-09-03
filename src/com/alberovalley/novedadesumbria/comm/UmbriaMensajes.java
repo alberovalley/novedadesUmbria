@@ -1,5 +1,7 @@
 package com.alberovalley.novedadesumbria.comm;
 
+import com.alberovalley.novedadesumbria.data.UmbriaData;
+
 import android.util.Log;
 
 public class UmbriaMensajes {
@@ -27,13 +29,13 @@ public class UmbriaMensajes {
         Log.d("novUmbria", "NovedadesWidgetProvider.connectionReceived: ");
         if (!data.isThereError()) {
             message = "";
-            if (data.notifyPlayerMessages && data.getPlayerMessages() > 0)
+            if (data.isNotifyPlayerMessages() && data.getPlayerMessages() > 0)
                 message += "Hay mensajes en Jugador.\n";
-            if (data.notifyStorytellerMessages && data.getStorytellerMessages() > 0)
+            if (data.isNotifyStorytellerMessages() && data.getStorytellerMessages() > 0)
                 message += "Hay mensajes en Narrador.\n";
-            if (data.notifyVipMessages && data.getVipMessages() > 0)
+            if (data.isNotifyVipMessages() && data.getVipMessages() > 0)
                 message += "Hay mensajes en VIP.\n";
-            if (data.notifyPrivateMessages && data.getPrivateMessages() > 0)
+            if (data.isNotifyPrivateMessages() && data.getPrivateMessages() > 0)
                 message += "Tienes mensajes privados.\n";
 
             if (message.equalsIgnoreCase(""))

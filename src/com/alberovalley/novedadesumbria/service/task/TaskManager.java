@@ -23,7 +23,7 @@ import android.util.Log;
 
 import com.alberovalley.novedadesumbria.comm.LoginData;
 import com.alberovalley.novedadesumbria.comm.NovedadesParser;
-import com.alberovalley.novedadesumbria.comm.UmbriaData;
+import com.alberovalley.novedadesumbria.data.UmbriaData;
 
 public class TaskManager {
     public final static String URL_NOVEDADES = "http://www.comunidadumbria.com/usuario/novedades";
@@ -65,15 +65,13 @@ public class TaskManager {
 
                 html = builder.toString();
                 Log.d("novUmbria", "TaskManager.getNovedades respuesta recibida: " + html);
-                // TODO parseo
-
-                umbriadata.setPlayerMessages(NovedadesParser.findPlayerMessages(html));
-
-                umbriadata.setStorytellerMessages(NovedadesParser.findStorytellerMessages(html));
-
-                umbriadata.setVipMessages(NovedadesParser.findVIPMessages(html));
-
-                umbriadata.setPrivateMessages(NovedadesParser.findPrivateMessages(html));
+                
+                // TODO parseo --> 1 step
+                umbriadata = NovedadesParser.ParseData(html);
+                //umbriadata.setPlayerMessages(NovedadesParser.findPlayerMessages(html));
+                //umbriadata.setStorytellerMessages(NovedadesParser.findStorytellerMessages(html));
+                //umbriadata.setVipMessages(NovedadesParser.findVIPMessages(html));
+                //umbriadata.setPrivateMessages(NovedadesParser.findPrivateMessages(html));
             } else {
                 umbriadata.flagError("Respuesta incorrecta ");
                 Log.i("novUmbria", "TaskManager.getNovedades Respuesta incorrecta: " + statusCode);
