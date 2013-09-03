@@ -1,4 +1,4 @@
 # generated files
-/Tapabook/bin/
-/Tapabook/gen/
-*.apk
+/bin
+/gen
+

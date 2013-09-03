@@ -125,14 +125,21 @@ public class NotificadorService extends IntentService {
 
                     String texto = UmbriaMensajes.makeNotificationText(umbriadata);
 
-                    if (currentVersion < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                    // if (currentVersion < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                    if (currentVersion < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        Log.v("novUmbria", "NotificadorService.publishResults creamos notificación \"antigua\"");
                         noti = new Notification(
                                 R.drawable.ic_mini_widget_on,
                                 "Novedades en Comunidad Umbría", System.currentTimeMillis());
-                        noti.vibrate = new long[] { 100, 200, 100, 500 };
+                        // Vibrate if vibrate is enabled
+                        noti.defaults |= Notification.DEFAULT_VIBRATE;
+                        // noti.setLatestEventInfo(this, "contentTitle", "contentText",pIntent);
+                        noti.setLatestEventInfo(this, "Novedades en Comunidad Umbría", "Ir a Novedades", pIntent);
+
                         // Hide the notification after its selected
                         noti.flags |= Notification.FLAG_AUTO_CANCEL;
-                    } else {
+                    } else if (currentVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        Log.v("novUmbria", "NotificadorService.publishResults creamos notificación \"moderna\"");
                         noti = new Notification.Builder(this)
                                 .setContentTitle("Novedades en Comunidad Umbría")
                                 // .setContentText("Subject")
@@ -142,20 +149,28 @@ public class NotificadorService extends IntentService {
                                 .setStyle(new Notification.BigTextStyle().bigText(texto))
                                 .build();
                         noti.vibrate = new long[] { 100, 200, 100, 500 };
-                        // Hide the notification after its selected
-                        noti.flags |= Notification.FLAG_AUTO_CANCEL;
                     }
+
+                    // Hide the notification after its selected
+                    noti.flags |= Notification.FLAG_AUTO_CANCEL;
                 }
+
             } catch (UmbriaConnectionException e) {
                 // posiblemente: poner notificación roja
-                if (currentVersion < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                if (currentVersion < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    Log.v("novUmbria", "NotificadorService.publishResults UmbriaConnectionException creamos notificación \"antigua\"");
                     noti = new Notification(
                             R.drawable.ic_mini_widget_error,
                             "No pude conectar con Umbría. Por favor, revisa tus datos de acceso y tu conexión.",
                             System.currentTimeMillis());
                     // Hide the notification after its selected
+                    noti.setLatestEventInfo(this, "No pude conectar con Umbría.", "Por favor, revisa tus datos de acceso y tu conexión", null);
                     noti.flags |= Notification.FLAG_AUTO_CANCEL;
+                    // Vibrate if vibrate is enabled
+                    noti.defaults |= Notification.DEFAULT_VIBRATE;
+
                 } else {
+                    Log.v("novUmbria", "NotificadorService.publishResults UmbriaConnectionException creamos notificación \"moderna\"");
                     noti = new Notification.Builder(this)
                             .setContentTitle("Novedades en Comunidad Umbría")
                             // .setContentText("Subject")
@@ -167,13 +182,14 @@ public class NotificadorService extends IntentService {
                                             .bigText("No pude conectar con Umbría. Por favor, revisa tus datos de acceso y tu conexión."))
                             .build();
                     Log.e("novUmbria", "NotificadorService.publishResults UmbriaConnectionException = " + e.getMessage());
+                    // After a 100ms delay, vibrate for 200ms then pause for another
+                    // 100ms and then vibrate for 500ms
                     noti.vibrate = new long[] { 100, 200, 100, 500 };
                     // Hide the notification after its selected
                     noti.flags |= Notification.FLAG_AUTO_CANCEL;
                 }
             } finally {
-                // After a 100ms delay, vibrate for 200ms then pause for another
-                // 100ms and then vibrate for 500ms
+
                 if (noti != null) {
                     NotificationManager notificationManager =
                             (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -190,4 +206,5 @@ public class NotificadorService extends IntentService {
 
         }
     }
+
 }
