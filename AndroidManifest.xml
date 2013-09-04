@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -26,7 +26,7 @@
         </activity>
 
         <receiver
-            android:name=".widget.NovedadesWidgetProvider"
+            android:name=".widget.UmbriaWidgetProvider"
             android:label="@string/widget_label" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -37,7 +37,7 @@
                 android:resource="@xml/novedades_widget" />
         </receiver>
         <receiver
-            android:name=".widget.MiniNovedadesWidgetProvider"
+            android:name=".widget.UmbriaMiniWidgetProvider"
             android:label="@string/miniwidget_label" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -48,7 +48,7 @@
                 android:resource="@xml/mininovedades_widget" />
         </receiver>
 
-        <service android:name=".service.NotificadorService" >
+        <service android:name=".service.NewsCheckingService" >
         </service>
 
         <receiver android:name=".service.broadcastreceivers.BootReceiver" >

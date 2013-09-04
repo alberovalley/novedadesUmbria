@@ -5,34 +5,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import com.alberovalley.novedadesumbria.service.NotificadorService;
+import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.service.scheduler.Scheduler;
+import com.alberovalley.novedadesumbria.utils.AppConstants;
+import com.alberovalley.utils.AlberoLog;
 
 public class BootReceiver extends BroadcastReceiver {
-
+    // ////////////////////////////////////////////////////////////
+    // Life Cycle
+    // ////////////////////////////////////////////////////////////
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v("novUmbria", "BootReceiver.onReceive");
+        AlberoLog.v(this, ".onReceive");
         Context ctx = context.getApplicationContext();
-        Intent serviceIntent = new Intent(ctx, NotificadorService.class);
-        // interval en milisegundos
+        Intent serviceIntent = new Intent(ctx, NewsCheckingService.class);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        String frecuencia = sharedPrefs.getString("lpFrecuencia", "60");
-        Log.v("novUmbria", "BootReceiver.onReceive sharedPrefs: frecuencia >> " + frecuencia);
-        long interval = 1000 * 60 * Long.valueOf(frecuencia);
+        String strFreq = sharedPrefs.getString("lpFrecuencia", AppConstants.DEFAULT_FREQ);
+        AlberoLog.v(this, ".onReceive sharedPrefs: frecuencia >> " + strFreq);
+        long interval = 1000 * 60 * Long.valueOf(strFreq);
 
         if (Scheduler.cancelScheduledService(ctx, serviceIntent)) {
-            Log.v("novUmbria", "BootReceiver.onReceive cancelado posible servicio anterior");
+            AlberoLog.v(this, ".onReceive cancelado posible servicio anterior");
             if (Scheduler.scheduleService(ctx, serviceIntent, interval)) {
-                Log.v("novUmbria", "BootReceiver.onReceive arrancado el servicio");
+                AlberoLog.v(this, ".onReceive arrancado el servicio");
             } else {
-                Log.wtf("novUmbria", "BootReceiver.onReceive ¿por qué falla el iniciar servicio? ");
+                AlberoLog.w(this, ".onReceive ¿por qué falla el iniciar servicio? ");
             }
         } else {
-            Log.wtf("novUmbria", "BootReceiver.onReceive ¿por qué falla el cancelar servicio? ");
+            AlberoLog.w(this, ".onReceive ¿por qué falla el cancelar servicio? ");
         }
 
     }

@@ -2,6 +2,7 @@
 <lint>
     <issue id="NewApi">
         <ignore path="src/com/alberovalley/novedadesumbria/SettingsFragment.java" />
+        <ignore path="src/com/alberovalley/novedadesumbria/service/NewsCheckingService.java" />
         <ignore path="src/com/alberovalley/novedadesumbria/service/NotificadorService.java" />
     </issue>
 </lint>

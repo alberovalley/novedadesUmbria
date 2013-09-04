@@ -6,18 +6,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import com.alberovalley.novedadesumbria.service.NotificadorService;
+import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.service.scheduler.Scheduler;
+import com.alberovalley.utils.AlberoLog;
 
 public class SettingsActivity extends PreferenceActivity {
+    // ////////////////////////////////////////////////////////////
+    // Life Cycle
+    // ////////////////////////////////////////////////////////////
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
         int currentVersion = android.os.Build.VERSION.SDK_INT;
-        Log.v("novUmbria", "SettingsActivity.onCreate currentVersion = " + currentVersion);
+        AlberoLog.v(this, ".onCreate currentVersion = " + currentVersion);
         if (currentVersion < android.os.Build.VERSION_CODES.HONEYCOMB) {
             addPreferencesFromResource(R.xml.preferences);
         }
@@ -25,20 +29,42 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     protected void onStop() {
-        Log.v("novUmbria", "SettingsActivity.onStop");
-        Intent serviceIntent = new Intent(getApplicationContext(), NotificadorService.class);
-        Scheduler.cancelScheduledService(getApplicationContext(), serviceIntent);
+        AlberoLog.v(this, ".onStop");
 
+        cancelAlarmService();
+        setAlarmService();
+        super.onStop();
+    }
+
+    // ////////////////////////////////////////////////////////////
+    // Methods
+    // ////////////////////////////////////////////////////////////
+
+    /**
+     * To cancel pre-existing alarms - if any - for this service
+     */
+    private void cancelAlarmService() {
+        AlberoLog.v(this, ".cancelAlarmService");
+        Intent serviceIntent = new Intent(getApplicationContext(), NewsCheckingService.class);
+        Scheduler.cancelScheduledService(getApplicationContext(), serviceIntent);
+    }
+
+    /**
+     * To set the alarm to check on the website according to the specified frequency
+     */
+    private void setAlarmService() {
+        AlberoLog.v(this, ".setAlarmService");
         Context context = getApplicationContext();
+        Intent serviceIntent = new Intent(getApplicationContext(), NewsCheckingService.class);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String frecuencia = sharedPrefs.getString("lpFrecuencia", "60");
-        Log.v("novUmbria", "SettingsActivity.onStop sharedPrefs: frecuencia >> " + frecuencia);
-        long frequency = 1000 * 60 * Long.valueOf(frecuencia);
+        String strFreq = sharedPrefs.getString("lpFrecuencia", "60");
+        AlberoLog.v(this, ".setAlarmService sharedPrefs: frecuencia >> " + strFreq);
+        long frequency = 1000 * 60 * Long.valueOf(strFreq);
         Scheduler.scheduleService(getApplicationContext(),
                 serviceIntent,
                 frequency
                 );
-        Log.v("novUmbria", "SettingsActivity.onStop scheduleService");
-        super.onStop();
+
     }
+
 }

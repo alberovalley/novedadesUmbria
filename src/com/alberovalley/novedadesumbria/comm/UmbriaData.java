@@ -3,8 +3,16 @@ package com.alberovalley.novedadesumbria.comm;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * POJO used to transfer the data received from the website
+ * 
+ * @author frank
+ * 
+ */
 public class UmbriaData implements Parcelable {
-
+    // ////////////////////////////////////////////////////////////
+    // Attributes
+    // ////////////////////////////////////////////////////////////
     protected String numericalId = "";
     protected int privateMessages = 0;
     protected int storytellerMessages = 0;
@@ -18,6 +26,9 @@ public class UmbriaData implements Parcelable {
     protected boolean notifyPlayerMessages = false;
     protected boolean notifyVipMessages = false;
 
+    // ////////////////////////////////////////////////////////////
+    // Constructors
+    // ////////////////////////////////////////////////////////////
     public UmbriaData(Parcel in) {
         readFromParcel(in);
     }
@@ -25,11 +36,17 @@ public class UmbriaData implements Parcelable {
     public UmbriaData() {
     }
 
+    // ////////////////////////////////////////////////////////////
+    // Methods
+    // ////////////////////////////////////////////////////////////
     public void flagError(String errorMsg) {
         this.errorFlag = true;
         this.errorMessage = errorMsg;
     }
 
+    // ////////////////////////////////////////////////////////////
+    // Getters & Setters
+    // ////////////////////////////////////////////////////////////
     public int getStorytellerMessages() {
         return storytellerMessages;
     }
@@ -119,6 +136,9 @@ public class UmbriaData implements Parcelable {
         this.notifyVipMessages = notifyVipMessages;
     }
 
+    // ////////////////////////////////////////////////////////////
+    // Parcelable implementation
+    // ////////////////////////////////////////////////////////////
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(numericalId);

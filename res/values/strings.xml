@@ -2,8 +2,30 @@
 <resources>
 
     <string name="app_name">Novedades Umbria</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuración</string>
     <string name="hello_world">Hello world!</string>
+    <!--  -->
+    <string name="error_cannot_connect">No puedo conectar a Comunidad Umbría</string>
+    <string name="error_ilegal_state">Estado Ilegal. Por favor, informe al desarrollador de este error.</string>
+    <string name="error_encoding">Problema con la cofificación. Por favor, informe al desarrollador de este error.</string>
+    <string name="error_wrong_response">La web no responde como esperamos. Por favor, informe al desarrollador de este error.</string>
+    <!--  -->
+    <string name="notification_news_title">Hay Novedades en Comunidad Umbría</string>
+    <string name="notification_error_message_long">No pude conectar con Comunidad Umbría. Por favor, revisa tus datos de acceso y tu conexión</string>
+    <string name="notification_error_title_short">No pude conectar con Comunidad Umbría.</string>
+    <string name="notification_error_message_short">Por favor, revisa tus datos de acceso y tu conexión.</string>
+    <string name="notification_news_action">Ir a Novedades</string>
+    <!--  -->
+    <string name="widget_text_searching">Buscando novedades...</string>
+    <string name="widget_text_player">Hay mensajes nuevos en Jugador.\n</string>
+    <string name="widget_text_storyteller">Hay mensajes nuevos en Narrador.\n</string>
+    <string name="widget_text_vip">Hay mensajes nuevos en VIP.\n</string>
+    <string name="widget_text_private">Hay mensajes privados nuevos.\n</string>
+    <string name="widget_text_empty">No hay mensajes nuevos.\n</string>
+    <string name="widget_text_error">Se produjo algún error durante la comunicación con Comunidad Umbría\n Por favor, revise su conexión.</string>
+    <!--  -->
+    
+    <!--  -->
     <string name="widget_label">Novedades Umbría</string>
     <string name="miniwidget_label">Novedades Umbría Mini</string>
     <string name="boton_comprobar">Comprobar Novedades</string>

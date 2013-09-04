@@ -19,38 +19,51 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import android.util.Log;
+import android.content.Context;
 
-import com.alberovalley.novedadesumbria.comm.LoginData;
-import com.alberovalley.novedadesumbria.comm.NovedadesParser;
+import com.alberovalley.novedadesumbria.R;
+import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
+import com.alberovalley.novedadesumbria.comm.UmbriaParser;
 import com.alberovalley.novedadesumbria.comm.UmbriaData;
+import com.alberovalley.novedadesumbria.utils.AppConstants;
+import com.alberovalley.utils.AlberoLog;
 
+/**
+ * Wrapper for different tasks (like log-in to the website and check for news)
+ * to be carried out by Services
+ * 
+ * @author frank
+ * 
+ */
 public class TaskManager {
-    public final static String URL_NOVEDADES = "http://www.comunidadumbria.com/usuario/novedades";
+    // ////////////////////////////////////////////////////////////
+    // Constants
+    // ////////////////////////////////////////////////////////////
     private final static String URL_INICIAL = "http://www.comunidadumbria.com/front";
-    public static final String RESULT = "result";
-    public static final String UPDATE = "update";
 
-    public static UmbriaData getNovedades(LoginData ld) {
+    // ////////////////////////////////////////////////////////////
+    // Methods
+    // ////////////////////////////////////////////////////////////
+    public static UmbriaData getNovedades(UmbriaLoginData ld, Context ctx) {
         UmbriaData umbriadata = new UmbriaData();
 
         String html = "";
         HttpClient httpClient = new DefaultHttpClient();
         StringBuilder builder = new StringBuilder();
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair(LoginData.userNameTAG, ld.getUserName()));
-        nameValuePairs.add(new BasicNameValuePair(LoginData.passwordTAG, ld.getPassword()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.userNameTAG, ld.getUserName()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.passwordTAG, ld.getPassword()));
 
-        HttpPost request = new HttpPost(URL_NOVEDADES);
+        HttpPost request = new HttpPost(AppConstants.URL_NOVEDADES);
 
         try {
-            // request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
             request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             HttpResponse response = httpClient.execute(request);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
-            Log.v("novUmbria", "TaskManager.getNovedades código respuesta: " + statusCode);
+
+            AlberoLog.v("TaskManager.getNovedades código respuesta: " + statusCode);
             if (statusCode == 200) {
                 /*
                  * Si todo fue ok, montamos la String con los datos en formato JSON
@@ -64,60 +77,57 @@ public class TaskManager {
                 }
 
                 html = builder.toString();
-                Log.d("novUmbria", "TaskManager.getNovedades respuesta recibida: " + html);
+                AlberoLog.d("TaskManager.getNovedades respuesta recibida: " + html);
                 // TODO parseo
 
-                umbriadata.setPlayerMessages(NovedadesParser.findPlayerMessages(html));
+                umbriadata.setPlayerMessages(UmbriaParser.findPlayerMessages(html));
 
-                umbriadata.setStorytellerMessages(NovedadesParser.findStorytellerMessages(html));
+                umbriadata.setStorytellerMessages(UmbriaParser.findStorytellerMessages(html));
 
-                umbriadata.setVipMessages(NovedadesParser.findVIPMessages(html));
+                umbriadata.setVipMessages(UmbriaParser.findVIPMessages(html));
 
-                umbriadata.setPrivateMessages(NovedadesParser.findPrivateMessages(html));
+                umbriadata.setPrivateMessages(UmbriaParser.findPrivateMessages(html));
             } else {
-                umbriadata.flagError("Respuesta incorrecta ");
-                Log.i("novUmbria", "TaskManager.getNovedades Respuesta incorrecta: " + statusCode);
+                umbriadata.flagError(ctx.getResources().getString(R.string.error_wrong_response));
+                AlberoLog.i("TaskManager.getNovedades Respuesta incorrecta: " + statusCode);
             }
         } catch (UnsupportedEncodingException e) {
-            umbriadata.flagError("Problema de codificación");
-            Log.e("novUmbria", "TaskManager.getNovedades Problema de codificación " + e.getMessage());
+            umbriadata.flagError(ctx.getResources().getString(R.string.error_encoding));
+            AlberoLog.e("TaskManager.getNovedades Problema de codificación " + e.getMessage());
             e.printStackTrace();
         } catch (IllegalStateException e) {
-            umbriadata.flagError("Problema de Estado Ilegal. Contacte con el desarrollador");
-            Log.e("novUmbria", "TaskManager.getNovedades IllegalStateException Problema de Estado Ilegal " + e.getMessage());
+            umbriadata.flagError(ctx.getResources().getString(R.string.error_ilegal_state));
+            AlberoLog.e("TaskManager.getNovedades IllegalStateException Problema de Estado Ilegal " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            umbriadata.flagError("Problema de comunicación ¿Tienes conexión?");
-            Log.e("novUmbria", "TaskManager.getNovedades IOException " + e.getMessage());
+            umbriadata.flagError(ctx.getResources().getString(R.string.error_cannot_connect));
+            AlberoLog.e("TaskManager.getNovedades IOException " + e.getMessage());
             e.printStackTrace();
         }
         return umbriadata;
 
     }
 
-    public static boolean login(LoginData ld) {
+    public static boolean login(UmbriaLoginData ld) {
         boolean ok = false;
 
         HttpClient httpClient = new DefaultHttpClient();
         StringBuilder builder = new StringBuilder();
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair(LoginData.userNameTAG, ld.getUserName()));
-        nameValuePairs.add(new BasicNameValuePair(LoginData.passwordTAG, ld.getPassword()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.userNameTAG, ld.getUserName()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.passwordTAG, ld.getPassword()));
 
-        HttpPost request = new HttpPost(URL_NOVEDADES);
-        Log.v("novUmbria", "TaskManager.login llamando a: " + URL_INICIAL);
+        HttpPost request = new HttpPost(AppConstants.URL_NOVEDADES);
+        AlberoLog.v("TaskManager.login llamando a: " + URL_INICIAL);
         try {
             request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
-            // request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             HttpResponse response = httpClient.execute(request);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
-            Log.v("novUmbria", "TaskManager.login código respuesta: " + statusCode);
+            AlberoLog.v("TaskManager.login código respuesta: " + statusCode);
             if (statusCode == 200) {
-                /*
-                 * Si todo fue ok, montamos la String con los datos en formato JSON
-                 */
+
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
@@ -127,17 +137,17 @@ public class TaskManager {
                 }
 
                 String html = builder.toString();
-                Log.v("novUmbria", "TaskManager.login html: " + html);
+                AlberoLog.v("TaskManager.login html: " + html);
                 if (html.lastIndexOf("Has perdido tu clave") < 0) {
-                    Log.v("novUmbria", "TaskManager.login OK : ");
+                    AlberoLog.v("TaskManager.login OK : ");
                     ok = true;
                 } else {
-                    Log.w("novUmbria", "TaskManager.login Falló el login : ");
+                    AlberoLog.w("TaskManager.login Falló el login : ");
                 }
             }
 
         } catch (Exception e) {
-            Log.e("novUmbria", "TaskManager.login Excepción : " + e.getMessage());
+            AlberoLog.e("TaskManager.login Excepción : " + e.getMessage());
         }
         return ok;
     }
