@@ -9,7 +9,9 @@ import android.preference.PreferenceManager;
 
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.service.scheduler.Scheduler;
+import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
+import com.bugsense.trace.BugSenseHandler;
 
 public class SettingsActivity extends PreferenceActivity {
     // ////////////////////////////////////////////////////////////
@@ -19,6 +21,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BugSenseHandler.initAndStartSession(getApplicationContext(), AppConstants.BUGSENSE_API_KEY);
         setContentView(R.layout.settings_activity);
         int currentVersion = android.os.Build.VERSION.SDK_INT;
         AlberoLog.v(this, ".onCreate currentVersion = " + currentVersion);

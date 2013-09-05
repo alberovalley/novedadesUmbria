@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
+import com.alberovalley.novedadesumbria.comm.UmbriaConnectionException;
 import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaMessenger;
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
@@ -42,7 +43,10 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
             AlberoLog.v(this, ".onUpdate widget nº: " + i);
 
             int appWidgetId = appWidgetIds[i];
-
+            // check once on demand
+            Intent serviceIntent = new Intent(context, NewsCheckingService.class);
+            context.startService(serviceIntent);
+            AlberoLog.d(this, ".onUpdate: inicia el SERVICIO ");
             // Create an Intent to open the browser
             Intent navegaIntent = new Intent(Intent.ACTION_VIEW);
             navegaIntent.setData(Uri.parse(AppConstants.URL_NOVEDADES));
@@ -121,13 +125,29 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
                     AlberoLog.w(this, ".BroadcastReceiver appWidgetIds null");
                 }
 
+                String notificationText = "";
+                try {
+                    if (UmbriaMessenger.isThereAnythingNew(data)) {
+                        notificationText = UmbriaMessenger.makeNotificationText(data, context.getApplicationContext());
+                        AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
+                    } else {
+                        notificationText = context.getResources().getString(R.string.widget_text_empty);
+                        AlberoLog.v(this, ".BroadcastReceiver NO hay Novedades");
+                    }
+                } catch (UmbriaConnectionException e) {
+                    notificationText = context.getResources().getString(R.string.widget_text_error);
+                    AlberoLog.v(this, ".BroadcastReceiver error ");
+                }
+
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
                     for (int widgetId : appWidgetIds) {
                         views = new RemoteViews(context.getPackageName(), R.layout.widget1);
-                        AlberoLog.v(this, ".BroadcastReceiver actualiza vista remota ");
+                        // notificationText = UmbriaMessenger.makeNotificationText(data, context.getApplicationContext());
+                        AlberoLog.v(this, ".BroadcastReceiver actualiza vista remota: " + notificationText);
+
                         views.setTextViewText(
                                 R.id.tvRespuestaUmbria,
-                                UmbriaMessenger.makeNotificationText(data, context.getApplicationContext())
+                                notificationText
                                 );
                         appWidgetManager.updateAppWidget(widgetId, views);
 

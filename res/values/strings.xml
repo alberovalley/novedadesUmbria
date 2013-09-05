@@ -5,16 +5,22 @@
     <string name="action_settings">Configuración</string>
     <string name="hello_world">Hello world!</string>
     <!--  -->
-    <string name="error_cannot_connect">No puedo conectar a Comunidad Umbría</string>
+    <string name="error_cannot_connect">No puedo conectar a CU</string>
     <string name="error_ilegal_state">Estado Ilegal. Por favor, informe al desarrollador de este error.</string>
     <string name="error_encoding">Problema con la cofificación. Por favor, informe al desarrollador de este error.</string>
     <string name="error_wrong_response">La web no responde como esperamos. Por favor, informe al desarrollador de este error.</string>
     <!--  -->
-    <string name="notification_news_title">Hay Novedades en Comunidad Umbría</string>
+    <string name="notification_news_title">Hay Novedades en CU</string>
     <string name="notification_error_message_long">No pude conectar con Comunidad Umbría. Por favor, revisa tus datos de acceso y tu conexión</string>
-    <string name="notification_error_title_short">No pude conectar con Comunidad Umbría.</string>
+    <string name="notification_error_title_short">No pude conectar con CU.</string>
     <string name="notification_error_message_short">Por favor, revisa tus datos de acceso y tu conexión.</string>
     <string name="notification_news_action">Ir a Novedades</string>
+    <!--  -->
+    <string name="new_messages">Hay nuevos Mensajes en</string>
+    <string name="new_messages_storyteller">Narrador</string>
+    <string name="new_messages_player">Jugador</string>
+    <string name="new_messages_vip">VIP</string>
+    <string name="new_messages_private">Privados</string>
     <!--  -->
     <string name="widget_text_searching">Buscando novedades...</string>
     <string name="widget_text_player">Hay mensajes nuevos en Jugador.\n</string>

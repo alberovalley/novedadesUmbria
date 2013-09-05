@@ -12,9 +12,9 @@ import android.preference.PreferenceManager;
 
 import com.alberovalley.novedadesumbria.R;
 import com.alberovalley.novedadesumbria.SettingsActivity;
-import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
 import com.alberovalley.novedadesumbria.comm.UmbriaConnectionException;
 import com.alberovalley.novedadesumbria.comm.UmbriaData;
+import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
 import com.alberovalley.novedadesumbria.comm.UmbriaMessenger;
 import com.alberovalley.novedadesumbria.service.task.TaskManager;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
@@ -120,7 +120,7 @@ public class NewsCheckingService extends IntentService {
 
     @SuppressWarnings("deprecation")
     private void publishResults(UmbriaData umbriadata) {
-
+        AlberoLog.v(this, ".publishResults publicando ");
         if (notificacion) {
 
             AlberoLog.v(this, ".publishResults notificacion: ");
@@ -150,11 +150,11 @@ public class NewsCheckingService extends IntentService {
                 }
             }
 
-            Intent intent = new Intent(NOTIFICATION);
-            intent.putExtra(RESULT, umbriadata);
-            sendBroadcast(intent);
-
         }
+        AlberoLog.v(this, ".publishResults publicando ");
+        Intent intent = new Intent(NOTIFICATION);
+        intent.putExtra(RESULT, umbriadata);
+        sendBroadcast(intent);
     }
 
     // ////////////////////////////////////////////////////////////
@@ -212,7 +212,8 @@ public class NewsCheckingService extends IntentService {
         intent.setData(Uri.parse(AppConstants.URL_NOVEDADES));
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        String texto = UmbriaMessenger.makeNotificationText(umbriadata, getApplicationContext());
+        String text = UmbriaMessenger.makeNotificationText(umbriadata, getApplicationContext());
+        AlberoLog.v(this, ".publishResults texto a notificar: " + text);
         if (currentVersion < android.os.Build.VERSION_CODES.JELLY_BEAN) {
             AlberoLog.v(this, ".publishResults creamos notificación \"antigua\"");
             notification = new Notification(
@@ -240,7 +241,7 @@ public class NewsCheckingService extends IntentService {
                     .setSmallIcon(R.drawable.ic_mini_widget_on)
                     .setContentIntent(pIntent)
                     .addAction(R.drawable.ic_stat_notif_icon, getResources().getString(R.string.notification_news_action), pIntent)
-                    .setStyle(new Notification.BigTextStyle().bigText(texto))
+                    .setStyle(new Notification.BigTextStyle().bigText(text))
                     .build();
 
             // TODO check if user wants the notification to vibrate

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alberovalley.novedadesumbria.R;
 import com.alberovalley.utils.AlberoLog;
+import com.alberovalley.utils.AlberoStrings;
 
 /**
  * Collection of methods that transform the data received into information
@@ -50,22 +51,46 @@ public class UmbriaMessenger {
         AlberoLog.d("UmbriaMessenger.makeNotificationText: ");
         if (!data.isThereError()) {
             message = "";
-            if (data.isNotifyPlayerMessages() && data.getPlayerMessages() > 0)
-                message += ctx.getResources().getString(R.string.widget_text_player);
-            if (data.notifyStorytellerMessages && data.getStorytellerMessages() > 0)
-                message += ctx.getResources().getString(R.string.widget_text_storyteller);
-            if (data.notifyVipMessages && data.getVipMessages() > 0)
-                message += ctx.getResources().getString(R.string.widget_text_vip);
-            if (data.notifyPrivateMessages && data.getPrivateMessages() > 0)
-                message += ctx.getResources().getString(R.string.widget_text_private);
+            try {
+                if (isThereAnythingNew(data)) {
+                    message = ctx.getResources().getString(R.string.new_messages);
+                    String temp = message;
+                    if (data.isNotifyPlayerMessages() && data.getPlayerMessages() > 0)
+                        message += " " + ctx.getResources().getString(R.string.new_messages_player);
+                    if (data.notifyStorytellerMessages && data.getStorytellerMessages() > 0) {
+                        message = AlberoStrings
+                                .appendComma(
+                                        temp,
+                                        message,
+                                        ctx.getResources().getString(R.string.new_messages_storyteller));
+                    }
+                    if (data.notifyVipMessages && data.getVipMessages() > 0) {
+                        message = AlberoStrings
+                                .appendComma(
+                                        temp,
+                                        message,
+                                        ctx.getResources().getString(R.string.new_messages_vip));
 
-            if (message.equalsIgnoreCase(""))
-                message = ctx.getResources().getString(R.string.widget_text_empty);
+                    }
+                    if (data.notifyPrivateMessages && data.getPrivateMessages() > 0) {
+                        message = AlberoStrings
+                                .appendComma(
+                                        temp,
+                                        message,
+                                        ctx.getResources().getString(R.string.new_messages_private));
+                    }
+                } else {
+                    message = ctx.getResources().getString(R.string.widget_text_empty);
+                }
+            } catch (UmbriaConnectionException e) {
+                message = ctx.getResources().getString(R.string.notification_error_message_short);
+            }
+
         } else {
             message = ctx.getResources().getString(R.string.widget_text_error);
             AlberoLog.e("UmbriaMessenger.makeNotificationText Error en comunicación: " + data.getErrorMessage());
         }
-
+        AlberoLog.d("UmbriaMessenger.makeNotificationText mensaje: " + message);
         return message;
     }
 }
