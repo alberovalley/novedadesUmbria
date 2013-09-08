@@ -18,6 +18,7 @@ import com.alberovalley.utils.AlberoLog;
  * 
  */
 public class Scheduler {
+
     // ////////////////////////////////////////////////////////////
     // Methods
     // ////////////////////////////////////////////////////////////
@@ -27,8 +28,8 @@ public class Scheduler {
         try {
             AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
             am.cancel(
-                    PendingIntent.getBroadcast(
-                            ctx, 0,
+                    PendingIntent.getService(
+                            ctx, NewsCheckingService.SERVICE_ID,
                             new Intent(ctx, NewsCheckingService.class),
                             // avoid creating a second service if there's already one running
                             PendingIntent.FLAG_CANCEL_CURRENT
@@ -56,7 +57,7 @@ public class Scheduler {
                     cal.getTimeInMillis(),
                     interval,
                     PendingIntent.getService(
-                            ctx, 0,
+                            ctx, NewsCheckingService.SERVICE_ID,
                             new Intent(ctx, NewsCheckingService.class),
                             // avoid creating a second service if there's already one running
                             PendingIntent.FLAG_CANCEL_CURRENT

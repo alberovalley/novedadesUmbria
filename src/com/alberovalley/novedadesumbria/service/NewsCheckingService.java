@@ -33,6 +33,7 @@ public class NewsCheckingService extends IntentService {
     public static final String UPDATE = "update";
     public static final String NOTIFICATION = "com.alberovalley.novedadesumbria.service";
 
+    public static final int SERVICE_ID = 8008;
     // ////////////////////////////////////////////////////////////
     // attributes
     // ////////////////////////////////////////////////////////////
