@@ -22,9 +22,9 @@ import org.apache.http.protocol.HTTP;
 import android.content.Context;
 
 import com.alberovalley.novedadesumbria.R;
+import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
 import com.alberovalley.novedadesumbria.comm.UmbriaParser;
-import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
 
@@ -88,19 +88,31 @@ public class TaskManager {
 
                 umbriadata.setPrivateMessages(UmbriaParser.findPrivateMessages(html));
             } else {
-                umbriadata.flagError(ctx.getResources().getString(R.string.error_wrong_response));
+                umbriadata.flagError(
+                        ctx.getResources().getString(R.string.error_wrong_response_title),
+                        ctx.getResources().getString(R.string.error_wrong_response_body)
+                        );
                 AlberoLog.i("TaskManager.getNovedades Respuesta incorrecta: " + statusCode);
             }
         } catch (UnsupportedEncodingException e) {
-            umbriadata.flagError(ctx.getResources().getString(R.string.error_encoding));
+            umbriadata.flagError(
+                    ctx.getResources().getString(R.string.error_encoding_title),
+                    ctx.getResources().getString(R.string.error_encoding_body)
+                    );
             AlberoLog.e("TaskManager.getNovedades Problema de codificación " + e.getMessage());
             e.printStackTrace();
         } catch (IllegalStateException e) {
-            umbriadata.flagError(ctx.getResources().getString(R.string.error_ilegal_state));
+            umbriadata.flagError(
+                    ctx.getResources().getString(R.string.error_ilegal_state_title),
+                    ctx.getResources().getString(R.string.error_ilegal_state_body)
+                    );
             AlberoLog.e("TaskManager.getNovedades IllegalStateException Problema de Estado Ilegal " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            umbriadata.flagError(ctx.getResources().getString(R.string.error_cannot_connect));
+            umbriadata.flagError(
+                    ctx.getResources().getString(R.string.error_ioexception_title),
+                    ctx.getResources().getString(R.string.error_ioexception_body)
+                    );
             AlberoLog.e("TaskManager.getNovedades IOException " + e.getMessage());
             e.printStackTrace();
         }
@@ -108,7 +120,7 @@ public class TaskManager {
 
     }
 
-    public static boolean login(UmbriaLoginData ld) {
+    public static boolean login(UmbriaLoginData ld) throws IllegalStateException, IOException {
         boolean ok = false;
 
         HttpClient httpClient = new DefaultHttpClient();
@@ -119,36 +131,33 @@ public class TaskManager {
 
         HttpPost request = new HttpPost(AppConstants.URL_NOVEDADES);
         AlberoLog.v("TaskManager.login llamando a: " + URL_INICIAL);
-        try {
-            request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
-            HttpResponse response = httpClient.execute(request);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            AlberoLog.v("TaskManager.login código respuesta: " + statusCode);
-            if (statusCode == 200) {
+        request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
+        HttpResponse response = httpClient.execute(request);
+        StatusLine statusLine = response.getStatusLine();
+        int statusCode = statusLine.getStatusCode();
+        AlberoLog.v("TaskManager.login código respuesta: " + statusCode);
+        if (statusCode == 200) {
 
-                String html = builder.toString();
-                AlberoLog.v("TaskManager.login html: " + html);
-                if (html.lastIndexOf("Has perdido tu clave") < 0) {
-                    AlberoLog.v("TaskManager.login OK : ");
-                    ok = true;
-                } else {
-                    AlberoLog.w("TaskManager.login Falló el login : ");
-                }
+            HttpEntity entity = response.getEntity();
+            InputStream content = entity.getContent();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
             }
 
-        } catch (Exception e) {
-            AlberoLog.e("TaskManager.login Excepción : " + e.getMessage());
+            String html = builder.toString();
+            AlberoLog.v("TaskManager.login html: " + html);
+            if (html.lastIndexOf("Has perdido tu clave") < 0) {
+                AlberoLog.v("TaskManager.login OK : ");
+                ok = true;
+            } else {
+                AlberoLog.w("TaskManager.login Falló el login : ");
+            }
         }
+
         return ok;
     }
 

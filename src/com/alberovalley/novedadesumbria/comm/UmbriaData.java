@@ -19,7 +19,8 @@ public class UmbriaData implements Parcelable {
     protected int playerMessages = 0;
     protected int vipMessages = 0;
     protected boolean errorFlag = false;
-    protected String errorMessage = "";
+    protected String errorMessageTitle = "";
+    protected String errorMessageBody = "";
 
     protected boolean notifyPrivateMessages = false;
     protected boolean notifyStorytellerMessages = false;
@@ -39,9 +40,10 @@ public class UmbriaData implements Parcelable {
     // ////////////////////////////////////////////////////////////
     // Methods
     // ////////////////////////////////////////////////////////////
-    public void flagError(String errorMsg) {
+    public void flagError(String errorMsgTitle, String errorMsgBody) {
         this.errorFlag = true;
-        this.errorMessage = errorMsg;
+        this.errorMessageTitle = errorMsgTitle;
+        this.errorMessageBody = errorMsgBody;
     }
 
     // ////////////////////////////////////////////////////////////
@@ -91,12 +93,20 @@ public class UmbriaData implements Parcelable {
         this.privateMessages = privateMessages;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getErrorMessageTitle() {
+        return errorMessageTitle;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setErrorMessageTitle(String errorMessageTitle) {
+        this.errorMessageTitle = errorMessageTitle;
+    }
+
+    public String getErrorMessageBody() {
+        return errorMessageBody;
+    }
+
+    public void setErrorMessageBody(String errorMessageBody) {
+        this.errorMessageBody = errorMessageBody;
     }
 
     @Override
@@ -148,7 +158,7 @@ public class UmbriaData implements Parcelable {
         dest.writeInt(vipMessages);
         int intErrorFlag = errorFlag ? 1 : 0;
         dest.writeInt(intErrorFlag);
-        dest.writeString(errorMessage);
+        dest.writeString(errorMessageTitle);
 
         int iNotifyPrivateMessages = notifyPrivateMessages ? 1 : 0;
         dest.writeInt(iNotifyPrivateMessages);
@@ -169,7 +179,7 @@ public class UmbriaData implements Parcelable {
         vipMessages = in.readInt();
         int intErrorFlag = in.readInt();
         errorFlag = intErrorFlag == 1;
-        errorMessage = in.readString();
+        errorMessageTitle = in.readString();
 
         int iNotifyPrivateMessages = in.readInt();
         notifyPrivateMessages = iNotifyPrivateMessages == 1;

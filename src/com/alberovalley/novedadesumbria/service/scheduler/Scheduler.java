@@ -36,7 +36,7 @@ public class Scheduler {
                             )
 
                     );
-            AlberoLog.v("Scheduler.cancelScheduledService Servicio cancelado");
+            AlberoLog.v("Scheduler.cancelScheduledService Servicio cancelado: " + NewsCheckingService.SERVICE_ID);
         } catch (Exception e) {
             AlberoLog.e("Scheduler.cancelScheduledService Excepción: " + e.getMessage());
             success = false;
@@ -64,7 +64,7 @@ public class Scheduler {
                             )
 
                     );
-            AlberoLog.v("Scheduler.scheduleService Servicio programado a las "
+            AlberoLog.v("Scheduler.scheduleService Servicio: " + NewsCheckingService.SERVICE_ID + " programado a las "
                     + timeformat.format(cal.getTime())
                     + " cada " + (interval / 60000) + " minutos"
                     );

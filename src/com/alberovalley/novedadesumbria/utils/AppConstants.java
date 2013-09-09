@@ -9,4 +9,6 @@ public interface AppConstants {
     public static final String DEFAULT_FREQ = "60";
 
     public static final String BUGSENSE_API_KEY = "bb8a8dff";
+
+    public static final int INTERVAL_NEVER = 0;// to avoid repetition of the service
 }

@@ -1,5 +1,7 @@
 package com.alberovalley.novedadesumbria.service;
 
+import java.io.IOException;
+
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -7,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources.NotFoundException;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
@@ -84,7 +87,9 @@ public class NewsCheckingService extends IntentService {
         if (user.equalsIgnoreCase("") || pass.equalsIgnoreCase("")) {
             // Si faltan datos de login, mostrar la configuración
             AlberoLog.v(getClass().getSimpleName() + ".onHandleIntent faltan datos config, llamando a Settings");
-            showSettings(getApplicationContext());
+
+            // Notify the lack of login data as an error
+            showNoLoginDataError(getApplicationContext());
 
         } else {
             AlberoLog.v(this, ".onHandleIntent todo correcto, llamando a CU");
@@ -92,12 +97,34 @@ public class NewsCheckingService extends IntentService {
         }
     }
 
-    private void showSettings(Context context) {
-        Intent intent = new Intent(context, SettingsActivity.class);
-        // flag required to open an Activity from a
-        // NON activity context, like this Service
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+    private void showNoLoginDataError(Context context) {
+        AlberoLog.v(this, ".showNoLoginDataError");
+        UmbriaData data = new UmbriaData();
+        data.flagError(context.
+                getApplicationContext().
+                getResources().
+                getString(R.string.error_no_login_data_title),
+                context.
+                        getApplicationContext().
+                        getResources().
+                        getString(R.string.error_no_login_data_body)
+                );
+        AlberoLog.v(this, ".showNoLoginDataError creating notification");
+        Notification noti = null;
+        noti = createNotificationForError(data);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        AlberoLog.v(this, ".showNoLoginDataError lanzar notificación ");
+        notificationManager.notify(0, noti);
+
+        /*
+         * Intent intent = new Intent(context, SettingsActivity.class);
+         * // flag required to open an Activity from a
+         * // NON activity context, like this Service
+         * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         * context.startActivity(intent);
+         */
     }
 
     public void connectToUmbria(String user, String pass) {
@@ -105,12 +132,39 @@ public class NewsCheckingService extends IntentService {
         UmbriaLoginData ld = new UmbriaLoginData(user, pass);
         UmbriaData umbriadata = new UmbriaData();
         AlberoLog.v(this, ".connectToUmbria llamando a: TaskManager.login");
-        if (!TaskManager.login(ld)) {
-            // login fails
-            umbriadata.flagError(getResources().getString(R.string.error_cannot_connect));
-        } else {
-            AlberoLog.v(this, ".connectToUmbria Login hecho: ");
-            umbriadata = TaskManager.getNovedades(ld, getApplicationContext());
+        try {
+            if (!TaskManager.login(ld)) {
+                // login fails. Since we know it's not an IOException, not a 404 error
+                // it must be a wrong username or password
+                umbriadata.flagError(
+                        getResources().getString(R.string.error_wrong_login_data_title),
+                        getResources().getString(R.string.error_wrong_login_data_body)
+                        );
+            } else {
+                AlberoLog.v(this, ".connectToUmbria Login hecho: ");
+                umbriadata = TaskManager.getNovedades(ld, getApplicationContext());
+            }
+        } catch (IllegalStateException e) {
+            umbriadata.flagError(
+                    getApplicationContext().getResources().getString(R.string.error_ilegal_state_title),
+                    getApplicationContext().getResources().getString(R.string.error_ilegal_state_body)
+                    );
+            AlberoLog.e(this, ".connectToUmbria IllegalStateException Problema de Estado Ilegal " + e.getMessage());
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            umbriadata.flagError(
+                    getApplicationContext().getResources().getString(R.string.error_notfoundexception_title),
+                    getApplicationContext().getResources().getString(R.string.error_notfoundexception_body)
+                    );
+            AlberoLog.e(this, ".connectToUmbria NotFoundException " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            umbriadata.flagError(
+                    getApplicationContext().getResources().getString(R.string.error_ioexception_title),
+                    getApplicationContext().getResources().getString(R.string.error_ioexception_body)
+                    );
+            AlberoLog.e(this, ".connectToUmbria IOException " + e.getMessage());
+            e.printStackTrace();
         }
         umbriadata.setNotifyPlayerMessages(player);
         umbriadata.setNotifyPrivateMessages(privateMessages);
@@ -170,12 +224,12 @@ public class NewsCheckingService extends IntentService {
             AlberoLog.v(this, ".createNotificationForError UmbriaConnectionException creamos notificación \"antigua\"");
             notification = new Notification(
                     R.drawable.ic_mini_widget_error,
-                    getResources().getString(R.string.notification_error_title_short),
+                    umbriadata.getErrorMessageTitle(),
                     System.currentTimeMillis());
             // Hide the notification after its selected
             notification.setLatestEventInfo(this,
-                    getResources().getString(R.string.notification_error_title_short),
-                    getResources().getString(R.string.notification_error_message_short),
+                    umbriadata.getErrorMessageTitle(),
+                    umbriadata.getErrorMessageBody(),
                     PendingIntent.getActivity(this, 0,
                             new Intent(this, SettingsActivity.class), 0)
                     );
@@ -186,12 +240,12 @@ public class NewsCheckingService extends IntentService {
         } else {
             AlberoLog.v(this, ".publishResults UmbriaConnectionException creamos notificación \"moderna\"");
             notification = new Notification.Builder(this)
-                    .setContentTitle(getResources().getString(R.string.notification_error_title_short))
+                    .setContentTitle(umbriadata.getErrorMessageTitle())
                     .setSmallIcon(R.drawable.ic_mini_widget_error)
                     // no intent needed
                     .setStyle(
                             new Notification.BigTextStyle()
-                                    .bigText(getResources().getString(R.string.notification_error_message_long)))
+                                    .bigText(umbriadata.getErrorMessageBody()))
                     .build();
 
             // After a 100ms delay, vibrate for 200ms then pause for another 100ms and then vibrate for 500ms

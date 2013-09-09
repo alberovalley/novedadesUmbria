@@ -40,7 +40,7 @@ public class UmbriaMessenger {
             somethingNew = (player + storyteller + vip + pMessages) != 0;
         } else {
             // there was some error, throw UmbriaConnectionException
-            throw new UmbriaConnectionException(data.getErrorMessage());
+            throw new UmbriaConnectionException(data.getErrorMessageTitle() + " \n " + data.getErrorMessageBody());
         }
 
         return somethingNew;
@@ -83,12 +83,13 @@ public class UmbriaMessenger {
                     message = ctx.getResources().getString(R.string.widget_text_empty);
                 }
             } catch (UmbriaConnectionException e) {
-                message = ctx.getResources().getString(R.string.notification_error_message_short);
+                message = e.getMessage();
             }
 
         } else {
-            message = ctx.getResources().getString(R.string.widget_text_error);
-            AlberoLog.e("UmbriaMessenger.makeNotificationText Error en comunicación: " + data.getErrorMessage());
+            message = data.getErrorMessageTitle();
+            AlberoLog.e("UmbriaMessenger.makeNotificationText Error en comunicación: " + data.getErrorMessageTitle() + " "
+                    + data.getErrorMessageBody());
         }
         AlberoLog.d("UmbriaMessenger.makeNotificationText mensaje: " + message);
         return message;
