@@ -6,6 +6,7 @@
         <item name="45">45</item>
         <item name="60">60</item>
         <item name="120">120</item>
+        <item name="Nunca">0</item>
     </string-array>
     <string-array name="frecuencias">
         <item name="15">Cada cuarto de hora</item>
@@ -13,6 +14,7 @@
         <item name="45">Cada 45 minutos</item>
         <item name="60">Cada hora</item>
         <item name="120">Cada dos horas</item>
+        <item name="Nunca">No se repetirá</item>
     </string-array>
     
 </resources>

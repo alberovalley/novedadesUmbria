@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
+import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
 
 /**
@@ -51,27 +52,31 @@ public class Scheduler {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm");
 
-            AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
-            am.setRepeating(
-                    AlarmManager.RTC_WAKEUP,
-                    cal.getTimeInMillis(),
-                    interval,
-                    PendingIntent.getService(
-                            ctx, NewsCheckingService.SERVICE_ID,
-                            new Intent(ctx, NewsCheckingService.class),
-                            // avoid creating a second service if there's already one running
-                            PendingIntent.FLAG_CANCEL_CURRENT
-                            )
+            if (interval != AppConstants.INTERVAL_NEVER) {
+                AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+                am.setRepeating(
+                        AlarmManager.RTC_WAKEUP,
+                        cal.getTimeInMillis(),
+                        interval,
+                        PendingIntent.getService(
+                                ctx, NewsCheckingService.SERVICE_ID,
+                                new Intent(ctx, NewsCheckingService.class),
+                                // avoid creating a second service if there's already one running
+                                PendingIntent.FLAG_CANCEL_CURRENT
+                                )
 
-                    );
-            AlberoLog.v("Scheduler.scheduleService Servicio: " + NewsCheckingService.SERVICE_ID + " programado a las "
-                    + timeformat.format(cal.getTime())
-                    + " cada " + (interval / 60000) + " minutos"
-                    );
+                        );
+                AlberoLog.v("Scheduler.scheduleService Servicio: " + NewsCheckingService.SERVICE_ID + " programado a las "
+                        + timeformat.format(cal.getTime())
+                        + " cada " + (interval / 60000) + " minutos"
+                        );
 
-            AlberoLog.v("Scheduler.scheduleService Servicio iniciado"
-                    );
-
+                AlberoLog.v("Scheduler.scheduleService Servicio iniciado"
+                        );
+            } else {
+                AlberoLog.v("Scheduler.scheduleService Frecuencia NUNCA, no se programa"
+                        );
+            }
         } catch (Exception e) {
             AlberoLog.e("Scheduler.scheduleService Excepción: " + e.getMessage());
             success = false;
