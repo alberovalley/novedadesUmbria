@@ -29,6 +29,17 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
     // ////////////////////////////////////////////////////////////
     // Lifecycle
     // ////////////////////////////////////////////////////////////
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+    }
+
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         final int N = appWidgetIds.length;
@@ -54,7 +65,7 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
 
             // obtain the layout for the App Widget and assign an onClickListener to the button inside
             views = new RemoteViews(context.getPackageName(), R.layout.widget1);
-            views.setTextViewText(R.id.tvRespuestaUmbria, context.getResources().getString(R.string.widget_text_searching));
+            // views.setTextViewText(R.id.tvRespuestaUmbria, context.getResources().getString(R.string.widget_text_searching));
             views.setOnClickPendingIntent(R.id.btNavegaNovedades,
                     pendingIntentNavega);
 
@@ -88,16 +99,6 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
-    }
-
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        super.onDisabled(context);
     }
 
     // ////////////////////////////////////////////////////////////

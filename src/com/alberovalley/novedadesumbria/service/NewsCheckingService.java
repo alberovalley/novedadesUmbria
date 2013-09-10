@@ -238,7 +238,7 @@ public class NewsCheckingService extends IntentService {
             notification.defaults |= Notification.DEFAULT_VIBRATE;
 
         } else {
-            AlberoLog.v(this, ".publishResults UmbriaConnectionException creamos notificación \"moderna\"");
+            AlberoLog.v(this, ".createNotificationForError UmbriaConnectionException creamos notificación \"moderna\"");
             notification = new Notification.Builder(this)
                     .setContentTitle(umbriadata.getErrorMessageTitle())
                     .setSmallIcon(R.drawable.ic_mini_widget_error)
@@ -268,9 +268,9 @@ public class NewsCheckingService extends IntentService {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         String text = UmbriaMessenger.makeNotificationText(umbriadata, getApplicationContext());
-        AlberoLog.v(this, ".publishResults texto a notificar: " + text);
+        AlberoLog.v(this, ".createNotificationForNews texto a notificar: " + text);
         if (currentVersion < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            AlberoLog.v(this, ".publishResults creamos notificación \"antigua\"");
+            AlberoLog.v(this, ".createNotificationForNews creamos notificación \"antigua\"");
             notification = new Notification(
                     R.drawable.ic_mini_widget_on,
                     getResources().getString(R.string.notification_news_title),
@@ -289,7 +289,7 @@ public class NewsCheckingService extends IntentService {
         } else {
             // currentVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN
 
-            AlberoLog.v(this, ".publishResults creamos notificación \"moderna\"");
+            AlberoLog.v(this, ".createNotificationForNews creamos notificación \"moderna\"");
             notification = new Notification.Builder(this)
                     .setContentTitle(getResources().getString(R.string.notification_news_title))
                     // .setContentText("Subject")
