@@ -49,6 +49,7 @@ public class NewsCheckingService extends IntentService {
     private static boolean privateMessages;
 
     private static boolean notificacion;
+    private static boolean vibration;
 
     // ////////////////////////////////////////////////////////////
     // Lifecycle
@@ -73,6 +74,7 @@ public class NewsCheckingService extends IntentService {
         vip = sharedPrefs.getBoolean("cb_msg_VIP", false);
         privateMessages = sharedPrefs.getBoolean("cb_msg_Privado", false);
         notificacion = sharedPrefs.getBoolean("cb_notificacion", false);
+        vibration = sharedPrefs.getBoolean("cb_notificacion_vibrante", false);
     }
 
     @Override
@@ -234,8 +236,10 @@ public class NewsCheckingService extends IntentService {
                             new Intent(this, SettingsActivity.class), 0)
                     );
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            // TODO check if user wants the notification to vibrate
-            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            // check if user wants the notification to vibrate
+            if (vibration) {
+                notification.defaults |= Notification.DEFAULT_VIBRATE;
+            }
 
         } else {
             AlberoLog.v(this, ".createNotificationForError UmbriaConnectionException creamos notificación \"moderna\"");
@@ -248,9 +252,11 @@ public class NewsCheckingService extends IntentService {
                                     .bigText(umbriadata.getErrorMessageBody()))
                     .build();
 
-            // After a 100ms delay, vibrate for 200ms then pause for another 100ms and then vibrate for 500ms
-            // TODO check if user wants the notification to vibrate
-            notification.vibrate = new long[] { 100, 200, 100, 500 };
+            // check if user wants the notification to vibrate
+            if (vibration) {
+                // After a 100ms delay, vibrate for 200ms then pause for another 100ms and then vibrate for 500ms
+                notification.vibrate = new long[] { 100, 200, 100, 500 };
+            }
             // Hide the notification after its selected
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
         }
@@ -281,13 +287,14 @@ public class NewsCheckingService extends IntentService {
                     getResources().getString(R.string.notification_news_action),
                     pIntent);
 
-            // TODO check if user wants the notification to vibrate
-            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            // check if user wants the notification to vibrate
+            if (vibration) {
+                notification.defaults |= Notification.DEFAULT_VIBRATE;
+            }
 
             // Hide the notification after its selected
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
         } else {
-            // currentVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN
 
             AlberoLog.v(this, ".createNotificationForNews creamos notificación \"moderna\"");
             notification = new Notification.Builder(this)
@@ -299,8 +306,11 @@ public class NewsCheckingService extends IntentService {
                     .setStyle(new Notification.BigTextStyle().bigText(text))
                     .build();
 
-            // TODO check if user wants the notification to vibrate
-            notification.vibrate = new long[] { 100, 200, 100, 500 };
+            // check if user wants the notification to vibrate
+            if (vibration) {
+                // After a 100ms delay, vibrate for 200ms then pause for another 100ms and then vibrate for 500ms
+                notification.vibrate = new long[] { 100, 200, 100, 500 };
+            }
         }
         return notification;
     }

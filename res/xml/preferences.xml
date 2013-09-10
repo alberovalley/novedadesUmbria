@@ -24,8 +24,13 @@
     <PreferenceCategory android:title="Notificaciones" >
         <CheckBoxPreference
             android:key="cb_notificacion"
-            android:summary="Recibir notificación con vibración cuando haya novedades"
+            android:summary="Recibir notificación cuando haya novedades"
             android:title="Recibir Notificación" />
+        <CheckBoxPreference
+            android:key="cb_notificacion_vibrante"
+            android:summary="Vibrar cuando se reciba una notificación"
+            android:dependency="cb_notificacion"
+            android:title="Notificación con Vibración" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Preferencias de Aviso" >
         <CheckBoxPreference
