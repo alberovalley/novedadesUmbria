@@ -3,6 +3,7 @@ package com.alberovalley.novedadesumbria.comm.data.parse;
 import android.util.Log;
 
 import com.alberovalley.utils.AlberoLog;
+import com.bugsense.trace.BugSenseHandler;
 
 public class UmbriaParser {
     // ////////////////////////////////////////////////////////////
@@ -59,6 +60,7 @@ public class UmbriaParser {
                 msg = Integer.parseInt(substring);
             } catch (NumberFormatException e) {
                 AlberoLog.e("findPrivateMessages NumberFormatException  " + e.getMessage());
+                BugSenseHandler.addCrashExtraData("log", "NumberFormatException " + e.getMessage() + " parsing: " + substring);
                 throw new UmbriaParserException("findPrivateMessages error (not a number) parsing: " + substring);
             }
         } else {

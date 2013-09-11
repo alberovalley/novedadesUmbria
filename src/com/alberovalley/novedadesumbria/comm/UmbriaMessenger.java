@@ -6,6 +6,7 @@ import com.alberovalley.novedadesumbria.R;
 import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
 import com.alberovalley.utils.AlberoLog;
 import com.alberovalley.utils.AlberoStrings;
+import com.bugsense.trace.BugSenseHandler;
 
 /**
  * Collection of methods that transform the data received into information
@@ -84,6 +85,7 @@ public class UmbriaMessenger {
                     message = ctx.getResources().getString(R.string.widget_text_empty);
                 }
             } catch (UmbriaConnectionException e) {
+                BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
                 message = e.getMessage();
             }
 

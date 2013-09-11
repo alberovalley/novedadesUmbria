@@ -22,6 +22,7 @@ import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
 import com.alberovalley.novedadesumbria.service.task.TaskManager;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
+import com.bugsense.trace.BugSenseHandler;
 
 public class NewsCheckingService extends IntentService {
 
@@ -153,6 +154,7 @@ public class NewsCheckingService extends IntentService {
                     );
             AlberoLog.e(this, ".connectToUmbria IllegalStateException Problema de Estado Ilegal " + e.getMessage());
             e.printStackTrace();
+            BugSenseHandler.sendExceptionMessage("log", "IllegalStateException " + e.getMessage(), e);
         } catch (NotFoundException e) {
             umbriadata.flagError(
                     getApplicationContext().getResources().getString(R.string.error_notfoundexception_title),
@@ -160,6 +162,7 @@ public class NewsCheckingService extends IntentService {
                     );
             AlberoLog.e(this, ".connectToUmbria NotFoundException " + e.getMessage());
             e.printStackTrace();
+            BugSenseHandler.sendExceptionMessage("log", "NotFoundException " + e.getMessage(), e);
         } catch (IOException e) {
             umbriadata.flagError(
                     getApplicationContext().getResources().getString(R.string.error_ioexception_title),
@@ -167,6 +170,7 @@ public class NewsCheckingService extends IntentService {
                     );
             AlberoLog.e(this, ".connectToUmbria IOException " + e.getMessage());
             e.printStackTrace();
+            BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
         }
         umbriadata.setNotifyPlayerMessages(player);
         umbriadata.setNotifyPrivateMessages(privateMessages);
@@ -194,7 +198,8 @@ public class NewsCheckingService extends IntentService {
             } catch (UmbriaConnectionException e) {
                 // there was some problem trying to connect to the website, notify on it
                 noti = createNotificationForError(umbriadata);
-                AlberoLog.v(this, ".publishResults UmbriaConnectionException = " + e.getMessage());
+                AlberoLog.e(this, ".publishResults UmbriaConnectionException = " + e.getMessage());
+                BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
             } finally {
 
                 if (noti != null) {

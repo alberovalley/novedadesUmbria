@@ -28,6 +28,7 @@ import com.alberovalley.novedadesumbria.comm.data.parse.UmbriaParser;
 import com.alberovalley.novedadesumbria.comm.data.parse.UmbriaParserException;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
+import com.bugsense.trace.BugSenseHandler;
 
 /**
  * Wrapper for different tasks (like log-in to the website and check for news)
@@ -93,6 +94,7 @@ public class TaskManager {
                                     getResources().getString(R.string.error_parse_title),
                             ctx.getApplicationContext().
                                     getResources().getString(R.string.error_parse_body));
+                    BugSenseHandler.sendExceptionMessage("log", "UmbriaParserException " + e.getMessage(), e);
                 }
             } else {
                 umbriadata.flagError(
@@ -108,6 +110,7 @@ public class TaskManager {
                     );
             AlberoLog.e("TaskManager.getNovedades Problema de codificación " + e.getMessage());
             e.printStackTrace();
+            BugSenseHandler.sendExceptionMessage("log", "UnsupportedEncodingException " + e.getMessage(), e);
         } catch (IllegalStateException e) {
             umbriadata.flagError(
                     ctx.getResources().getString(R.string.error_ilegal_state_title),
@@ -115,12 +118,14 @@ public class TaskManager {
                     );
             AlberoLog.e("TaskManager.getNovedades IllegalStateException Problema de Estado Ilegal " + e.getMessage());
             e.printStackTrace();
+            BugSenseHandler.sendExceptionMessage("log", "IllegalStateException " + e.getMessage(), e);
         } catch (IOException e) {
             umbriadata.flagError(
                     ctx.getResources().getString(R.string.error_ioexception_title),
                     ctx.getResources().getString(R.string.error_ioexception_body)
                     );
             AlberoLog.e("TaskManager.getNovedades IOException " + e.getMessage());
+            BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
             e.printStackTrace();
         }
         return umbriadata;

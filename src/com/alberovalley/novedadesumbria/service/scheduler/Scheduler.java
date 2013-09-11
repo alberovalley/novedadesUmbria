@@ -11,6 +11,7 @@ import android.content.Intent;
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
+import com.bugsense.trace.BugSenseHandler;
 
 /**
  * Wrapper for cancelling and starting alarms methods
@@ -40,6 +41,7 @@ public class Scheduler {
             AlberoLog.v("Scheduler.cancelScheduledService Servicio cancelado: " + NewsCheckingService.SERVICE_ID);
         } catch (Exception e) {
             AlberoLog.e("Scheduler.cancelScheduledService Excepción: " + e.getMessage());
+            BugSenseHandler.sendExceptionMessage("log", "Scheduler.scheduleService Excepción " + e.getMessage(), e);
             success = false;
         }
         return success;
@@ -79,6 +81,7 @@ public class Scheduler {
             }
         } catch (Exception e) {
             AlberoLog.e("Scheduler.scheduleService Excepción: " + e.getMessage());
+            BugSenseHandler.sendExceptionMessage("log", "Scheduler.scheduleService Excepción " + e.getMessage(), e);
             success = false;
         }
         return success;
