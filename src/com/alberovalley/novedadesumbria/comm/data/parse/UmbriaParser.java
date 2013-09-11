@@ -55,7 +55,12 @@ public class UmbriaParser {
                     indexOfTag, indexOfTag + 1
                     );
             AlberoLog.v("findPrivateMessages substring  " + substring);
-            msg = Integer.parseInt(substring);
+            try {
+                msg = Integer.parseInt(substring);
+            } catch (NumberFormatException e) {
+                AlberoLog.e("findPrivateMessages NumberFormatException  " + e.getMessage());
+                throw new UmbriaParserException("findPrivateMessages error (not a number) parsing: " + substring);
+            }
         } else {
             AlberoLog.v("findPrivateMessages indexOfTag <=0 ");
             throw new UmbriaParserException("No encontrado el tag: [" + PRIVATE_MESSAGES_TAG + "]");
