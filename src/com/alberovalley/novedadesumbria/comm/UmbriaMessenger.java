@@ -3,6 +3,7 @@ package com.alberovalley.novedadesumbria.comm;
 import android.content.Context;
 
 import com.alberovalley.novedadesumbria.R;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
 import com.alberovalley.utils.AlberoLog;
 import com.alberovalley.utils.AlberoStrings;
 
@@ -29,13 +30,13 @@ public class UmbriaMessenger {
         if (!data.isThereError()) {
             int player = 0, storyteller = 0, vip = 0, pMessages = 0;
             // only take into account news the user wants to be notified about
-            if (data.notifyPlayerMessages)
+            if (data.isNotifyPlayerMessages())
                 player = data.getPlayerMessages();
-            if (data.notifyStorytellerMessages)
+            if (data.isNotifyStorytellerMessages())
                 storyteller = data.getStorytellerMessages();
-            if (data.notifyVipMessages)
+            if (data.isNotifyVipMessages())
                 vip = data.getVipMessages();
-            if (data.notifyPrivateMessages)
+            if (data.isNotifyPrivateMessages())
                 pMessages = data.getPrivateMessages();
             somethingNew = (player + storyteller + vip + pMessages) != 0;
         } else {
@@ -57,14 +58,14 @@ public class UmbriaMessenger {
                     String temp = message;
                     if (data.isNotifyPlayerMessages() && data.getPlayerMessages() > 0)
                         message += " " + ctx.getResources().getString(R.string.new_messages_player);
-                    if (data.notifyStorytellerMessages && data.getStorytellerMessages() > 0) {
+                    if (data.isNotifyStorytellerMessages() && data.getStorytellerMessages() > 0) {
                         message = AlberoStrings
                                 .appendComma(
                                         temp,
                                         message,
                                         ctx.getResources().getString(R.string.new_messages_storyteller));
                     }
-                    if (data.notifyVipMessages && data.getVipMessages() > 0) {
+                    if (data.isNotifyVipMessages() && data.getVipMessages() > 0) {
                         message = AlberoStrings
                                 .appendComma(
                                         temp,
@@ -72,7 +73,7 @@ public class UmbriaMessenger {
                                         ctx.getResources().getString(R.string.new_messages_vip));
 
                     }
-                    if (data.notifyPrivateMessages && data.getPrivateMessages() > 0) {
+                    if (data.isNotifyPrivateMessages() && data.getPrivateMessages() > 0) {
                         message = AlberoStrings
                                 .appendComma(
                                         temp,

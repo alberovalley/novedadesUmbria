@@ -14,8 +14,8 @@ import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
 import com.alberovalley.novedadesumbria.comm.UmbriaConnectionException;
-import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaMessenger;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;

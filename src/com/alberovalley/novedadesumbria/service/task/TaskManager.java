@@ -22,9 +22,10 @@ import org.apache.http.protocol.HTTP;
 import android.content.Context;
 
 import com.alberovalley.novedadesumbria.R;
-import com.alberovalley.novedadesumbria.comm.UmbriaData;
 import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
-import com.alberovalley.novedadesumbria.comm.UmbriaParser;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
+import com.alberovalley.novedadesumbria.comm.data.parse.UmbriaParser;
+import com.alberovalley.novedadesumbria.comm.data.parse.UmbriaParserException;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
 
@@ -39,7 +40,7 @@ public class TaskManager {
     // ////////////////////////////////////////////////////////////
     // Constants
     // ////////////////////////////////////////////////////////////
-    private final static String URL_INICIAL = "http://www.comunidadumbria.com/front";
+    protected final static String URL_INICIAL = "http://www.comunidadumbria.com/front";
 
     // ////////////////////////////////////////////////////////////
     // Methods
@@ -78,15 +79,21 @@ public class TaskManager {
 
                 html = builder.toString();
                 AlberoLog.d("TaskManager.getNovedades respuesta recibida: " + html);
-                // TODO parseo
-
-                umbriadata.setPlayerMessages(UmbriaParser.findPlayerMessages(html));
-
-                umbriadata.setStorytellerMessages(UmbriaParser.findStorytellerMessages(html));
-
-                umbriadata.setVipMessages(UmbriaParser.findVIPMessages(html));
-
-                umbriadata.setPrivateMessages(UmbriaParser.findPrivateMessages(html));
+                // parseo
+                try {
+                    umbriadata.setPlayerMessages(UmbriaParser.findPlayerMessages(html));
+                    umbriadata.setStorytellerMessages(UmbriaParser.findStorytellerMessages(html));
+                    umbriadata.setVipMessages(UmbriaParser.findVIPMessages(html));
+                    umbriadata.setPrivateMessages(UmbriaParser.findPrivateMessages(html));
+                } catch (UmbriaParserException e) {
+                    e.printStackTrace();
+                    AlberoLog.e("UmbriaData.parseHtml UmbriaParserException " + e.getMessage());
+                    umbriadata.flagError(
+                            ctx.getApplicationContext().
+                                    getResources().getString(R.string.error_parse_title),
+                            ctx.getApplicationContext().
+                                    getResources().getString(R.string.error_parse_body));
+                }
             } else {
                 umbriadata.flagError(
                         ctx.getResources().getString(R.string.error_wrong_response_title),
