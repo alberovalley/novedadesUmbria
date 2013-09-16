@@ -42,6 +42,8 @@ public class TaskManager {
     // Constants
     // ////////////////////////////////////////////////////////////
     protected final static String URL_INICIAL = "http://www.comunidadumbria.com/front";
+    protected final static String LOGIN_CHECKER_USUARIO = "<strong>Usuario:</strong>";
+    protected final static String LOGIN_CHECKER_CLAVE = "Has perdido tu clave";
 
     // ////////////////////////////////////////////////////////////
     // Methods
@@ -162,7 +164,7 @@ public class TaskManager {
 
             String html = builder.toString();
             AlberoLog.v("TaskManager.login html: " + html);
-            if (html.lastIndexOf("Has perdido tu clave") < 0) {
+            if (html.lastIndexOf(LOGIN_CHECKER_CLAVE) < 0 && html.lastIndexOf(LOGIN_CHECKER_USUARIO) > 0) {
                 AlberoLog.v("TaskManager.login OK : ");
                 ok = true;
             } else {
