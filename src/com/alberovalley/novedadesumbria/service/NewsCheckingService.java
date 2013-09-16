@@ -162,7 +162,7 @@ public class NewsCheckingService extends IntentService {
                     );
             AlberoLog.e(this, ".connectToUmbria NotFoundException " + e.getMessage());
             e.printStackTrace();
-            BugSenseHandler.sendExceptionMessage("log", "NotFoundException " + e.getMessage(), e);
+            // BugSenseHandler.sendExceptionMessage("log", "NotFoundException " + e.getMessage(), e);
         } catch (IOException e) {
             umbriadata.flagError(
                     getApplicationContext().getResources().getString(R.string.error_ioexception_title),
@@ -170,7 +170,7 @@ public class NewsCheckingService extends IntentService {
                     );
             AlberoLog.e(this, ".connectToUmbria IOException " + e.getMessage());
             e.printStackTrace();
-            BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
+            // BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
         }
         umbriadata.setNotifyPlayerMessages(player);
         umbriadata.setNotifyPrivateMessages(privateMessages);
@@ -199,7 +199,7 @@ public class NewsCheckingService extends IntentService {
                 // there was some problem trying to connect to the website, notify on it
                 noti = createNotificationForError(umbriadata);
                 AlberoLog.e(this, ".publishResults UmbriaConnectionException = " + e.getMessage());
-                BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
+                // BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
             } finally {
 
                 if (noti != null) {

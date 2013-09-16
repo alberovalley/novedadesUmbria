@@ -125,7 +125,7 @@ public class TaskManager {
                     ctx.getResources().getString(R.string.error_ioexception_body)
                     );
             AlberoLog.e("TaskManager.getNovedades IOException " + e.getMessage());
-            BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
+            // BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
             e.printStackTrace();
         }
         return umbriadata;

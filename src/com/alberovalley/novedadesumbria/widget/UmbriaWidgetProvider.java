@@ -19,7 +19,6 @@ import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
-import com.bugsense.trace.BugSenseHandler;
 
 public class UmbriaWidgetProvider extends AppWidgetProvider {
     // ////////////////////////////////////////////////////////////
@@ -139,7 +138,7 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
                 } catch (UmbriaConnectionException e) {
                     notificationText = context.getResources().getString(R.string.widget_text_error);
                     AlberoLog.e(this, ".BroadcastReceiver error ");
-                    BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
+                    // BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
                 }
 
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
