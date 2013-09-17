@@ -12,9 +12,9 @@ public class UmbriaForum implements Parcelable {
     private String forumUrl = "";
     private List<UmbriaForumThread> threads;
 
-    protected boolean errorFlag = false;
-    protected String errorMessageTitle = "";
-    protected String errorMessageBody = "";
+    private boolean errorFlag = false;
+    private String errorMessageTitle = "";
+    private String errorMessageBody = "";
 
     // ////////////////////////////////////////////////////////////
     // Constructors

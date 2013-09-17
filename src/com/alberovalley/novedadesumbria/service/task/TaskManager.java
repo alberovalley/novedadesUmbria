@@ -41,9 +41,9 @@ public class TaskManager {
     // ////////////////////////////////////////////////////////////
     // Constants
     // ////////////////////////////////////////////////////////////
-    protected final static String URL_INICIAL = "http://www.comunidadumbria.com/front";
-    protected final static String LOGIN_CHECKER_USUARIO = "<strong>Usuario:</strong>";
-    protected final static String LOGIN_CHECKER_CLAVE = "Has perdido tu clave";
+    protected static final String URL_INICIAL = "http://www.comunidadumbria.com/front";
+    protected static final String LOGIN_CHECKER_USUARIO = "<strong>Usuario:</strong>";
+    protected static final String LOGIN_CHECKER_CLAVE = "Has perdido tu clave";
 
     // ////////////////////////////////////////////////////////////
     // Methods
@@ -55,8 +55,8 @@ public class TaskManager {
         HttpClient httpClient = new DefaultHttpClient();
         StringBuilder builder = new StringBuilder();
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.userNameTAG, ld.getUserName()));
-        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.passwordTAG, ld.getPassword()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.USER_NAME_TAG, ld.getUserName()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.PASSWORD_TAG, ld.getPassword()));
 
         HttpPost request = new HttpPost(AppConstants.URL_NOVEDADES);
 
@@ -89,7 +89,7 @@ public class TaskManager {
                     umbriadata.setVipMessages(UmbriaParser.findVIPMessages(html));
                     umbriadata.setPrivateMessages(UmbriaParser.findPrivateMessages(html));
                 } catch (UmbriaParserException e) {
-                    e.printStackTrace();
+
                     AlberoLog.e("UmbriaData.parseHtml UmbriaParserException " + e.getMessage());
                     umbriadata.flagError(
                             ctx.getApplicationContext().
@@ -111,7 +111,7 @@ public class TaskManager {
                     ctx.getResources().getString(R.string.error_encoding_body)
                     );
             AlberoLog.e("TaskManager.getNovedades Problema de codificación " + e.getMessage());
-            e.printStackTrace();
+
             BugSenseHandler.sendExceptionMessage("log", "UnsupportedEncodingException " + e.getMessage(), e);
         } catch (IllegalStateException e) {
             umbriadata.flagError(
@@ -119,7 +119,7 @@ public class TaskManager {
                     ctx.getResources().getString(R.string.error_ilegal_state_body)
                     );
             AlberoLog.e("TaskManager.getNovedades IllegalStateException Problema de Estado Ilegal " + e.getMessage());
-            e.printStackTrace();
+
             BugSenseHandler.sendExceptionMessage("log", "IllegalStateException " + e.getMessage(), e);
         } catch (IOException e) {
             umbriadata.flagError(
@@ -127,21 +127,20 @@ public class TaskManager {
                     ctx.getResources().getString(R.string.error_ioexception_body)
                     );
             AlberoLog.e("TaskManager.getNovedades IOException " + e.getMessage());
-            // BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
-            e.printStackTrace();
+
         }
         return umbriadata;
 
     }
 
-    public static boolean login(UmbriaLoginData ld) throws IllegalStateException, IOException {
+    public static boolean login(UmbriaLoginData ld) throws IOException {
         boolean ok = false;
 
         HttpClient httpClient = new DefaultHttpClient();
         StringBuilder builder = new StringBuilder();
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.userNameTAG, ld.getUserName()));
-        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.passwordTAG, ld.getPassword()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.USER_NAME_TAG, ld.getUserName()));
+        nameValuePairs.add(new BasicNameValuePair(UmbriaLoginData.PASSWORD_TAG, ld.getPassword()));
 
         HttpPost request = new HttpPost(AppConstants.URL_NOVEDADES);
         AlberoLog.v("TaskManager.login llamando a: " + URL_INICIAL);

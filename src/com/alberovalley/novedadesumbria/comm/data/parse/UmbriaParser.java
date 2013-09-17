@@ -37,14 +37,6 @@ public class UmbriaParser {
 
     }
 
-    /*
-     * public static String findNumericalId(String html, String username) {
-     * String numericalId = "";
-     * String substring = html.substring(html.lastIndexOf(username));
-     * return numericalId;
-     * }
-     */
-
     public static int findPrivateMessages(String html) throws UmbriaParserException {
         AlberoLog.d("NovedadesParser.findPrivateMessages ");
         int msg = 0;

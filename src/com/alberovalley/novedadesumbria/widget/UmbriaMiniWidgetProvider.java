@@ -25,17 +25,17 @@ public class UmbriaMiniWidgetProvider extends AppWidgetProvider {
     // attributes
     // ////////////////////////////////////////////////////////////
 
-    RemoteViews views;
+    private RemoteViews views;
 
     // ////////////////////////////////////////////////////////////
     // Lifecycle
     // ////////////////////////////////////////////////////////////
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        final int N = appWidgetIds.length;
+        final int numberOfWidgets = appWidgetIds.length;
         // loop for every App Widget belonging to this provider
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < numberOfWidgets; i++) {
 
             AlberoLog.v(this, ".onUpdate registra receiver");
             context.getApplicationContext()
@@ -105,7 +105,6 @@ public class UmbriaMiniWidgetProvider extends AppWidgetProvider {
                     }
                 } catch (UmbriaConnectionException e) {
                     miniIcon = R.drawable.ic_mini_widget_error;
-                    // BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
                 }
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
                     for (int widgetId : appWidgetIds) {

@@ -87,18 +87,4 @@ public class Scheduler {
         return success;
     }
 
-    /*
-     * public static boolean startService(Context ctx, Intent serviceIntent) {
-     * boolean success = true;
-     * AlberoLog.v("Scheduler.startService");
-     * try {
-     * ctx.startService(serviceIntent);
-     * AlberoLog.v("Scheduler.startService Servicio iniciado");
-     * } catch (Exception e) {
-     * AlberoLog.e("Scheduler.startService Excepción: " + e.getMessage());
-     * success = false;
-     * }
-     * return success;
-     * }
-     */
 }

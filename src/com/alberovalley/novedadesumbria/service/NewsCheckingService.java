@@ -120,14 +120,6 @@ public class NewsCheckingService extends IntentService {
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         AlberoLog.v(this, ".showNoLoginDataError lanzar notificación ");
         notificationManager.notify(0, noti);
-
-        /*
-         * Intent intent = new Intent(context, SettingsActivity.class);
-         * // flag required to open an Activity from a
-         * // NON activity context, like this Service
-         * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         * context.startActivity(intent);
-         */
     }
 
     public void connectToUmbria(String user, String pass) {
@@ -153,7 +145,6 @@ public class NewsCheckingService extends IntentService {
                     getApplicationContext().getResources().getString(R.string.error_ilegal_state_body)
                     );
             AlberoLog.e(this, ".connectToUmbria IllegalStateException Problema de Estado Ilegal " + e.getMessage());
-            e.printStackTrace();
             BugSenseHandler.sendExceptionMessage("log", "IllegalStateException " + e.getMessage(), e);
         } catch (NotFoundException e) {
             umbriadata.flagError(
@@ -161,16 +152,12 @@ public class NewsCheckingService extends IntentService {
                     getApplicationContext().getResources().getString(R.string.error_notfoundexception_body)
                     );
             AlberoLog.e(this, ".connectToUmbria NotFoundException " + e.getMessage());
-            e.printStackTrace();
-            // BugSenseHandler.sendExceptionMessage("log", "NotFoundException " + e.getMessage(), e);
         } catch (IOException e) {
             umbriadata.flagError(
                     getApplicationContext().getResources().getString(R.string.error_ioexception_title),
                     getApplicationContext().getResources().getString(R.string.error_ioexception_body)
                     );
             AlberoLog.e(this, ".connectToUmbria IOException " + e.getMessage());
-            e.printStackTrace();
-            // BugSenseHandler.sendExceptionMessage("log", "IOException " + e.getMessage(), e);
         }
         umbriadata.setNotifyPlayerMessages(player);
         umbriadata.setNotifyPrivateMessages(privateMessages);
@@ -199,7 +186,6 @@ public class NewsCheckingService extends IntentService {
                 // there was some problem trying to connect to the website, notify on it
                 noti = createNotificationForError(umbriadata);
                 AlberoLog.e(this, ".publishResults UmbriaConnectionException = " + e.getMessage());
-                // BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
             } finally {
 
                 if (noti != null) {
@@ -304,7 +290,6 @@ public class NewsCheckingService extends IntentService {
             AlberoLog.v(this, ".createNotificationForNews creamos notificación \"moderna\"");
             notification = new Notification.Builder(this)
                     .setContentTitle(getResources().getString(R.string.notification_news_title))
-                    // .setContentText("Subject")
                     .setSmallIcon(R.drawable.ic_mini_widget_on)
                     .setContentIntent(pIntent)
                     .addAction(R.drawable.ic_stat_notif_icon, getResources().getString(R.string.notification_news_action), pIntent)

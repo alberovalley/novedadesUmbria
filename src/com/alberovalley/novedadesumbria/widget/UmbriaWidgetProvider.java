@@ -24,7 +24,7 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
     // ////////////////////////////////////////////////////////////
     // Attributes
     // ////////////////////////////////////////////////////////////
-    RemoteViews views;
+    private RemoteViews views;
 
     // ////////////////////////////////////////////////////////////
     // Lifecycle
@@ -42,10 +42,10 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        final int N = appWidgetIds.length;
+        final int numberOfWidgets = appWidgetIds.length;
         // loop for every App Widget belonging to this provide
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < numberOfWidgets; i++) {
 
             AlberoLog.v(this, ".onUpdate registra receiver");
             context.getApplicationContext()
@@ -65,7 +65,7 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
 
             // obtain the layout for the App Widget and assign an onClickListener to the button inside
             views = new RemoteViews(context.getPackageName(), R.layout.widget1);
-            // views.setTextViewText(R.id.tvRespuestaUmbria, context.getResources().getString(R.string.widget_text_searching));
+
             views.setOnClickPendingIntent(R.id.btNavegaNovedades,
                     pendingIntentNavega);
 
@@ -138,15 +138,12 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
                 } catch (UmbriaConnectionException e) {
                     notificationText = context.getResources().getString(R.string.widget_text_error);
                     AlberoLog.e(this, ".BroadcastReceiver error ");
-                    // BugSenseHandler.sendExceptionMessage("log", "UmbriaConnectionException " + e.getMessage(), e);
                 }
 
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
                     for (int widgetId : appWidgetIds) {
                         views = new RemoteViews(context.getPackageName(), R.layout.widget1);
-                        // notificationText = UmbriaMessenger.makeNotificationText(data, context.getApplicationContext());
                         AlberoLog.v(this, ".BroadcastReceiver actualiza vista remota: " + notificationText);
-
                         views.setTextViewText(
                                 R.id.tvRespuestaUmbria,
                                 notificationText

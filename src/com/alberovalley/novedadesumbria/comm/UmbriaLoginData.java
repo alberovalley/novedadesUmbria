@@ -10,13 +10,13 @@ public class UmbriaLoginData {
     // ////////////////////////////////////////////////////////////
     // Constants
     // ////////////////////////////////////////////////////////////
-    public static final String userNameTAG = "ACCESO";
-    public static final String passwordTAG = "CLAVE";
+    public static final String USER_NAME_TAG = "ACCESO";
+    public static final String PASSWORD_TAG = "CLAVE";
     // ////////////////////////////////////////////////////////////
     // Attributes
     // ////////////////////////////////////////////////////////////
-    public String userName = "";
-    public String password = "";
+    private String userName = "";
+    private String password = "";
 
     // ////////////////////////////////////////////////////////////
     // Constructor

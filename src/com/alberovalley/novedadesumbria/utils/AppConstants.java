@@ -2,13 +2,13 @@ package com.alberovalley.novedadesumbria.utils;
 
 public interface AppConstants {
 
-    public static final String LOGTAG = "novUmbria";
+    static final String LOGTAG = "novUmbria";
 
-    public final static String URL_NOVEDADES = "http://www.comunidadumbria.com/usuario/novedades";
+    static final String URL_NOVEDADES = "http://www.comunidadumbria.com/usuario/novedades";
 
-    public static final String DEFAULT_FREQ = "60";
+    static final String DEFAULT_FREQ = "60";
 
-    public static final String BUGSENSE_API_KEY = "bb8a8dff";
-
-    public static final int INTERVAL_NEVER = 0;// to avoid repetition of the service
+    static final String BUGSENSE_API_KEY = "bb8a8dff";
+    // to avoid repetition of the service
+    static final int INTERVAL_NEVER = 0;
 }

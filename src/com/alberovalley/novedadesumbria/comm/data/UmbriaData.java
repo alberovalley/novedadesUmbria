@@ -13,24 +13,24 @@ public class UmbriaData implements Parcelable {
     // ////////////////////////////////////////////////////////////
     // Attributes
     // ////////////////////////////////////////////////////////////
-    protected String numericalId = "";
-    protected int privateMessages = 0;
-    protected int storytellerMessages = 0;
-    protected int playerMessages = 0;
-    protected int vipMessages = 0;
-    protected boolean errorFlag = false;
-    protected String errorMessageTitle = "";
-    protected String errorMessageBody = "";
+    private String numericalId = "";
+    private int privateMessages = 0;
+    private int storytellerMessages = 0;
+    private int playerMessages = 0;
+    private int vipMessages = 0;
+    private boolean errorFlag = false;
+    private String errorMessageTitle = "";
+    private String errorMessageBody = "";
 
-    protected boolean notifyPrivateMessages = false;
-    protected boolean notifyStorytellerMessages = false;
-    protected boolean notifyPlayerMessages = false;
-    protected boolean notifyVipMessages = false;
+    private boolean notifyPrivateMessages = false;
+    private boolean notifyStorytellerMessages = false;
+    private boolean notifyPlayerMessages = false;
+    private boolean notifyVipMessages = false;
 
-    protected UmbriaSection playerSection;
-    protected UmbriaSection storytellerSection;
-    protected UmbriaSection vipSection;
-    protected UmbriaForumThread privateMessagesThread;
+    private UmbriaSection playerSection;
+    private UmbriaSection storytellerSection;
+    private UmbriaSection vipSection;
+    private UmbriaForumThread privateMessagesThread;
 
     // ////////////////////////////////////////////////////////////
     // Constructors

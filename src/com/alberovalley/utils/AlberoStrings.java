@@ -24,8 +24,9 @@ public class AlberoStrings {
     public static String appendComma(final String originalString, String appendableString, String textToAppend, boolean addWhiteSpace) {
         String result = appendableString;
         String whiteSpace = "";
-        if (addWhiteSpace)
+        if (addWhiteSpace) {
             whiteSpace = " ";
+        }
         if (originalString.equalsIgnoreCase(appendableString)) {
             // nothing has yet been added to the message, no comma needed
             result += whiteSpace + textToAppend;

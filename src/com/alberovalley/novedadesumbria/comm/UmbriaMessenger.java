@@ -31,14 +31,18 @@ public class UmbriaMessenger {
         if (!data.isThereError()) {
             int player = 0, storyteller = 0, vip = 0, pMessages = 0;
             // only take into account news the user wants to be notified about
-            if (data.isNotifyPlayerMessages())
+            if (data.isNotifyPlayerMessages()) {
                 player = data.getPlayerMessages();
-            if (data.isNotifyStorytellerMessages())
+            }
+            if (data.isNotifyStorytellerMessages()) {
                 storyteller = data.getStorytellerMessages();
-            if (data.isNotifyVipMessages())
+            }
+            if (data.isNotifyVipMessages()) {
                 vip = data.getVipMessages();
-            if (data.isNotifyPrivateMessages())
+            }
+            if (data.isNotifyPrivateMessages()) {
                 pMessages = data.getPrivateMessages();
+            }
             somethingNew = (player + storyteller + vip + pMessages) != 0;
         } else {
             // there was some error, throw UmbriaConnectionException
@@ -57,8 +61,9 @@ public class UmbriaMessenger {
                 if (isThereAnythingNew(data)) {
                     message = ctx.getResources().getString(R.string.new_messages);
                     String temp = message;
-                    if (data.isNotifyPlayerMessages() && data.getPlayerMessages() > 0)
+                    if (data.isNotifyPlayerMessages() && data.getPlayerMessages() > 0) {
                         message += " " + ctx.getResources().getString(R.string.new_messages_player);
+                    }
                     if (data.isNotifyStorytellerMessages() && data.getStorytellerMessages() > 0) {
                         message = AlberoStrings
                                 .appendComma(
