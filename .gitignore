@@ -44,7 +44,13 @@ build/
 #sonar
 .sonar/
 
+
+#gedit
+*~
+
 #keystore
-*.ks
+#*.ks
+
+
 
 
