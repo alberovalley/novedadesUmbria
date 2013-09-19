@@ -9,6 +9,7 @@
             android:title="Nombre de Usuario" />
         <EditTextPreference
             android:dialogTitle="Introduzca la contraseña"
+            android:inputType="textPassword"
             android:key="edittext_password"
             android:summary="Contraseña"
             android:title="Contraseña" />
