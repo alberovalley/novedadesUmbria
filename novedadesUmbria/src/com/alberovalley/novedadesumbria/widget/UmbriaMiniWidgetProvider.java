@@ -13,9 +13,7 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
-import com.alberovalley.novedadesumbria.comm.UmbriaConnectionException;
-import com.alberovalley.novedadesumbria.comm.UmbriaMessenger;
-import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaSimpleData;
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
@@ -84,7 +82,7 @@ public class UmbriaMiniWidgetProvider extends AppWidgetProvider {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 AlberoLog.v(this, ".BroadcastReceiver recibidos datos");
-                UmbriaData data = bundle.getParcelable(NewsCheckingService.RESULT);
+                UmbriaSimpleData data = bundle.getParcelable(NewsCheckingService.RESULT);
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
                 ComponentName thisWidget = new ComponentName(context.getApplicationContext(), UmbriaMiniWidgetProvider.class);
@@ -95,17 +93,13 @@ public class UmbriaMiniWidgetProvider extends AppWidgetProvider {
                 }
 
                 int miniIcon = 0;
-                try {
-                    if (UmbriaMessenger.isThereAnythingNew(data)) {
-                        miniIcon = R.drawable.ic_mini_widget_on;
-                        AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
-                    } else {
-                        miniIcon = R.drawable.ic_mini_widget_off;
-                        AlberoLog.v(this, ".BroadcastReceiver NO hay Novedades");
-                    }
-                } catch (UmbriaConnectionException e) {
-                    miniIcon = R.drawable.ic_mini_widget_error;
-                }
+                if (data.isThereAnythingNew()) {
+				    miniIcon = R.drawable.ic_mini_widget_on;
+				    AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
+				} else {
+				    miniIcon = R.drawable.ic_mini_widget_off;
+				    AlberoLog.v(this, ".BroadcastReceiver NO hay Novedades");
+				}
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
                     for (int widgetId : appWidgetIds) {
                         views = new RemoteViews(context.getPackageName(), R.layout.miniwidget);

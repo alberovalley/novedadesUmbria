@@ -9,6 +9,14 @@ import android.content.Context;
 
 public class AlberoProperties {
 
+    // ============================================================================================
+    // HIDE CONSTRUCTOR
+    // ============================================================================================
+	private AlberoProperties(){}
+    // ============================================================================================
+    // METHODS
+    // ============================================================================================
+	
     public static Properties loadProperties(Context ctx) throws IOException {
         String[] fileList = { "app.properties" };
         Properties prop = new Properties();

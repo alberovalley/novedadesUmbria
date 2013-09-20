@@ -6,6 +6,7 @@ import com.alberovalley.utils.AlberoLog;
 import com.bugsense.trace.BugSenseHandler;
 
 public class UmbriaParser {
+	
     // ////////////////////////////////////////////////////////////
     // Constants
     // ////////////////////////////////////////////////////////////
@@ -16,6 +17,10 @@ public class UmbriaParser {
 
     private static final String NO_MSG_TAG = "<p>No hay novedades</p>";
 
+    // ============================================================================================
+    // HIDE CONSTRUCTOR
+    // ============================================================================================    
+    private UmbriaParser() {	}
     // ////////////////////////////////////////////////////////////
     // Methods
     // ////////////////////////////////////////////////////////////
@@ -59,6 +64,7 @@ public class UmbriaParser {
             AlberoLog.v("findPrivateMessages indexOfTag <=0 ");
             throw new UmbriaParserException("No encontrado el tag: [" + PRIVATE_MESSAGES_TAG + "]");
         }
+        AlberoLog.v("findPrivateMessages returns: " + msg);
         return msg;
     }
 
@@ -86,7 +92,7 @@ public class UmbriaParser {
             AlberoLog.d("findMessageByTag no hay mensaje: ");
 
         }
-
+        AlberoLog.v("findMessageByTag " + tag + "  returns: " + msg);
         return msg;
 
     }

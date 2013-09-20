@@ -8,14 +8,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
-import com.alberovalley.novedadesumbria.comm.UmbriaConnectionException;
-import com.alberovalley.novedadesumbria.comm.UmbriaMessenger;
-import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaConfig;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaSimpleData;
 import com.alberovalley.novedadesumbria.service.NewsCheckingService;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
@@ -113,10 +114,22 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
         @Override
         public void onReceive(Context context, Intent intent) {
             AlberoLog.v(this, ".BroadcastReceiver ");
+            boolean storyteller;
+        	boolean player;
+        	boolean vip;
+        	boolean privateMessages;
+        	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        	storyteller = sharedPrefs.getBoolean("cb_msg_Narrador", false);
+    		vip = sharedPrefs.getBoolean("cb_msg_VIP", false);
+    		privateMessages = sharedPrefs.getBoolean("cb_msg_Privado", false);
+    		player = sharedPrefs.getBoolean("cb_msg_Jugador", false);
+    		// instantiate an UmbriaConfig object to pass to UmbriaSimpleData
+    		UmbriaConfig uc = new UmbriaConfig(privateMessages, storyteller, player, vip);
+            
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 AlberoLog.v(this, ".BroadcastReceiver recibidos datos");
-                UmbriaData data = bundle.getParcelable(NewsCheckingService.RESULT);
+                UmbriaSimpleData data = bundle.getParcelable(NewsCheckingService.RESULT);
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
                 ComponentName thisWidget = new ComponentName(context.getApplicationContext(), UmbriaWidgetProvider.class);
@@ -127,18 +140,13 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
                 }
 
                 String notificationText = "";
-                try {
-                    if (UmbriaMessenger.isThereAnythingNew(data)) {
-                        notificationText = UmbriaMessenger.makeNotificationText(data, context.getApplicationContext());
-                        AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
-                    } else {
-                        notificationText = context.getResources().getString(R.string.widget_text_empty);
-                        AlberoLog.v(this, ".BroadcastReceiver NO hay Novedades");
-                    }
-                } catch (UmbriaConnectionException e) {
-                    notificationText = context.getResources().getString(R.string.widget_text_error);
-                    AlberoLog.e(this, ".BroadcastReceiver error ");
-                }
+                if (data.isThereAnythingNew()) {
+				    notificationText = data.getLongNoticeText(uc, context.getApplicationContext());
+				    AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
+				} else {
+				    notificationText = context.getResources().getString(R.string.widget_text_empty);
+				    AlberoLog.v(this, ".BroadcastReceiver NO hay Novedades");
+				}
 
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
                     for (int widgetId : appWidgetIds) {

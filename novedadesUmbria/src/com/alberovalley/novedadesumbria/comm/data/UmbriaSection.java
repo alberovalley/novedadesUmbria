@@ -9,7 +9,6 @@ import android.os.Parcelable;
 public class UmbriaSection implements Parcelable {
 
     private String sectionName = "";
-    private boolean notify = false;
     private List<UmbriaForum> forums;
 
     // ////////////////////////////////////////////////////////////
@@ -32,15 +31,11 @@ public class UmbriaSection implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
 
         dest.writeString(sectionName);
-        int intNotify = notify ? 1 : 0;
-        dest.writeInt(intNotify);
         dest.writeTypedList(forums);
     }
 
     private void readFromParcel(Parcel in) {
         this.sectionName = in.readString();
-        int intNotify = in.readInt();
-        notify = intNotify == 1;
         in.readTypedList(forums, UmbriaForum.CREATOR);
 
     }
@@ -65,14 +60,6 @@ public class UmbriaSection implements Parcelable {
 
     public void setSectionName(String sectionName) {
         this.sectionName = sectionName;
-    }
-
-    public boolean isNotify() {
-        return notify;
-    }
-
-    public void setNotify(boolean notify) {
-        this.notify = notify;
     }
 
     public List<UmbriaForum> getForums() {
