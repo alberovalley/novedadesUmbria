@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.alberovalley.novedadesumbria.utils.AppConstants;
 
-public class AlberoLog {
+public final class AlberoLog {
 
     /**
      * Wrapper class for Log methods

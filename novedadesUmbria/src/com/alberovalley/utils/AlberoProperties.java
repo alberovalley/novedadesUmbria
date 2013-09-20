@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import android.content.Context;
 
-public class AlberoProperties {
+public final class AlberoProperties {
 
     // ============================================================================================
     // HIDE CONSTRUCTOR

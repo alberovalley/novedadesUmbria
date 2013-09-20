@@ -5,7 +5,7 @@ import android.util.Log;
 import com.alberovalley.utils.AlberoLog;
 import com.bugsense.trace.BugSenseHandler;
 
-public class UmbriaParser {
+public final class UmbriaParser {
 	
     // ////////////////////////////////////////////////////////////
     // Constants

@@ -1,6 +1,6 @@
 package com.alberovalley.utils;
 
-public class AlberoStrings {
+public final class AlberoStrings {
 
 	
     // ============================================================================================

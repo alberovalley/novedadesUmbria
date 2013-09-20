@@ -19,7 +19,7 @@ import com.bugsense.trace.BugSenseHandler;
  * @author frank
  * 
  */
-public class Scheduler {
+public final class Scheduler {
 
     // ============================================================================================
     // HIDE CONSTRUCTOR

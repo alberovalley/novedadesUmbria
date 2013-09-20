@@ -11,9 +11,9 @@ public class UmbriaNaeinData implements UmbriaData {
 	// Attributes
 	// ////////////////////////////////////////////////////////////
 	private String numericalId = "";
-	private UmbriaSection StorytellerSection;
-	private UmbriaSection PlayerSection;
-	private UmbriaSection VIPSection;
+	private UmbriaSection storytellerSection;
+	private UmbriaSection playerSection;
+	private UmbriaSection vipSection;
 	private int privateMessages = 0;
 	private boolean errorFlag = false;
 	private String errorMessageTitle = "";
@@ -31,9 +31,9 @@ public class UmbriaNaeinData implements UmbriaData {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(numericalId);
 		
-		dest.writeParcelable(this.StorytellerSection, flags);
-		dest.writeParcelable(this.PlayerSection, flags);
-		dest.writeParcelable(this.VIPSection, flags);
+		dest.writeParcelable(this.storytellerSection, flags);
+		dest.writeParcelable(this.playerSection, flags);
+		dest.writeParcelable(this.vipSection, flags);
 		
 		dest.writeInt(privateMessages);
 		int intErrorFlag = errorFlag ? 1 : 0;
@@ -45,9 +45,9 @@ public class UmbriaNaeinData implements UmbriaData {
 	private void readFromParcel(Parcel in) {
 		numericalId = in.readString();
 		
-		this.StorytellerSection = in.readParcelable(UmbriaSection.class.getClassLoader());
-		this.PlayerSection = in.readParcelable(UmbriaSection.class.getClassLoader());
-		this.VIPSection = in.readParcelable(UmbriaSection.class.getClassLoader());
+		this.storytellerSection = in.readParcelable(UmbriaSection.class.getClassLoader());
+		this.playerSection = in.readParcelable(UmbriaSection.class.getClassLoader());
+		this.vipSection = in.readParcelable(UmbriaSection.class.getClassLoader());
 		
 		privateMessages = in.readInt();
 		int intErrorFlag = in.readInt();
@@ -79,17 +79,17 @@ public class UmbriaNaeinData implements UmbriaData {
 	// ////////////////////////////////////////////////////////////		
 	@Override
 	public int getStorytellerMessageCount() {
-		return this.StorytellerSection.getNumberOfMessages();
+		return this.storytellerSection.getNumberOfMessages();
 	}
 
 	@Override
 	public int getPlayerMessageCount() {
-		return this.PlayerSection.getNumberOfMessages();
+		return this.playerSection.getNumberOfMessages();
 	}
 
 	@Override
 	public int getVIPMessageCount() {
-		return this.VIPSection.getNumberOfMessages();
+		return this.vipSection.getNumberOfMessages();
 	}
 
 	@Override
