@@ -29,7 +29,7 @@ import com.alberovalley.novedadesumbria.utils.AppConstants;
 import com.alberovalley.utils.AlberoLog;
 import com.bugsense.trace.BugSenseHandler;
 
-public class UmbriaSimpleTask extends UmbriaTask{
+public class UmbriaSimpleNovedadesTask extends UmbriaNovedadesTask{
 
     // ============================================================================================
     // MANDATORY METHODS

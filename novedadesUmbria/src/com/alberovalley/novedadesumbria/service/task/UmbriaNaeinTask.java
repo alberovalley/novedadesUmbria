@@ -5,7 +5,7 @@ import android.content.Context;
 import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
 import com.alberovalley.novedadesumbria.comm.data.UmbriaNaeinData;
 
-public class UmbriaNaeinTask  extends UmbriaTask{
+public class UmbriaNaeinTask  extends UmbriaNovedadesTask{
 	
     // ============================================================================================
     // MANDATORY METHODS

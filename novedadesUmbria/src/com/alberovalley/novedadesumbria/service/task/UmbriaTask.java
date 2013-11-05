@@ -1,11 +1,5 @@
 package com.alberovalley.novedadesumbria.service.task;
 
-import android.content.Context;
+public interface UmbriaTask {
 
-import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
-import com.alberovalley.novedadesumbria.comm.data.UmbriaData;
-
-public abstract class UmbriaTask {
-
-	public abstract UmbriaData getNovedades(UmbriaLoginData ld, Context ctx);
 }

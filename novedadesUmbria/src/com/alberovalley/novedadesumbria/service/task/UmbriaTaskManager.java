@@ -25,6 +25,7 @@ import com.alberovalley.novedadesumbria.R;
 import com.alberovalley.novedadesumbria.comm.UmbriaLoginData;
 import com.alberovalley.novedadesumbria.comm.data.UmbriaNaeinData;
 import com.alberovalley.novedadesumbria.comm.data.UmbriaSimpleData;
+import com.alberovalley.novedadesumbria.comm.data.UmbriaThreadData;
 import com.alberovalley.novedadesumbria.comm.data.parse.UmbriaParser;
 import com.alberovalley.novedadesumbria.comm.data.parse.UmbriaParserException;
 import com.alberovalley.novedadesumbria.utils.AppConstants;
@@ -60,17 +61,22 @@ public class UmbriaTaskManager {
     // Methods
     // ////////////////////////////////////////////////////////////
     public UmbriaSimpleData getUmbriaSimpleData(UmbriaLoginData ld, Context ctx) {
-    	this.task = new UmbriaSimpleTask();
-        return (UmbriaSimpleData) task.getNovedades(ld, ctx);
+    	this.task = new UmbriaSimpleNovedadesTask();
+        return (UmbriaSimpleData) ((UmbriaSimpleNovedadesTask) task).getNovedades(ld, ctx);
 
     }
-    
+    /*
     public UmbriaNaeinData getUmbriaNaeinData(UmbriaLoginData ld, Context ctx) {
     	this.task = new UmbriaNaeinTask();
-        return (UmbriaNaeinData) task.getNovedades(ld, ctx);
+        return  ((UmbriaSimpleNovedadesTask) task).getNovedades(ld, ctx);
 
+    }*/
+
+    public boolean postAbsenceThread(UmbriaLoginData ld, UmbriaThreadData utd){
+    	this.task = new UmbriaPostNewThreadTask();
+    	return ((UmbriaPostNewThreadTask) task).postNewThread(ld, utd);
     }
-
+    
     public static boolean login(UmbriaLoginData ld) throws IOException {
         boolean ok = false;
 

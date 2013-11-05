@@ -5,6 +5,9 @@ public interface AppConstants {
 	public static final String LOGTAG = "novUmbria";
 
 	public static final String URL_NOVEDADES = "http://www.comunidadumbria.com/usuario/novedades";
+	
+	public static final String URL_ABSENCE_THREADS = "http://www.comunidadumbria.com/comunidad/foros/seccion/nuevo/4";
+	
 
 	public static final String DEFAULT_FREQ = "60";
 

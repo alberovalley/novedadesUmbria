@@ -23,6 +23,11 @@ import com.alberovalley.utils.AlberoLog;
 
 public class UmbriaWidgetProvider extends AppWidgetProvider {
     // ////////////////////////////////////////////////////////////
+    // Constants
+    // ////////////////////////////////////////////////////////////
+	public static int ON_DEMAND = 1;
+	public static int AUTO = 0;
+	// ////////////////////////////////////////////////////////////
     // Attributes
     // ////////////////////////////////////////////////////////////
     private RemoteViews views;
@@ -55,10 +60,7 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
             AlberoLog.v(this, ".onUpdate widget nº: " + i);
 
             int appWidgetId = appWidgetIds[i];
-            // check once on demand
-            Intent serviceIntent = new Intent(context, NewsCheckingService.class);
-            context.startService(serviceIntent);
-            AlberoLog.d(this, ".onUpdate: inicia el SERVICIO ");
+            
             // Create an Intent to open the browser
             Intent navegaIntent = new Intent(Intent.ACTION_VIEW);
             navegaIntent.setData(Uri.parse(AppConstants.URL_NOVEDADES));
@@ -72,13 +74,44 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
 
             // update onDemand (onClick)
             views.setOnClickPendingIntent(R.id.btCompruebaNovedades,
-                    updateWidgetIntent(context));
+                    updateWidgetIntent(context, ON_DEMAND));
 
             // tells AppWidgetManager to update the current widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 
+    private PendingIntent updateWidgetIntent(Context context, int mode) {
+    	//String strFreq = "";
+    	AlberoLog.d(this, ".updateWidgetIntent " + mode + " call");
+    	if (mode == ON_DEMAND){
+    		// check once on demand
+            Intent serviceIntent = new Intent(context, NewsCheckingService.class);
+            context.startService(serviceIntent);
+            AlberoLog.d(this, ".updateWidgetIntent: inicia el SERVICIO ");
+            //AlberoLog.d(this, ".onUpdate: inicia el SERVICIO ");
+    	}
+    	/*
+    	if (mode != ON_DEMAND){
+    		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    		strFreq = sharedPrefs.getString("lpFrecuencia", "60");
+    		long frequency = 1000 * 60 * Long.valueOf(strFreq);
+    		if (frequency == 0){
+    			// if the widget updates automatically
+    			// and frequency is set to NEVER
+    			// there's no request to be sent
+    			AlberoLog.d(this, ".updateWidgetIntent automatic call with frequency set to 'NEVER'");
+    			return null;
+    		}
+    	}
+    	// if the widget updates either 
+        //  onDemand (via button) 
+    	//  or automatically AND frequency is NOT set to NEVER
+    	//  it returns the pending intent to send the request
+    	AlberoLog.d(this, ".updateWidgetIntent " + mode + " call, frequency set to [" + strFreq + "]");*/
+    	return updateWidgetIntent(context);
+    }
+    
     /**
      * Create a PendingIntent to force an update of the widget
      * 

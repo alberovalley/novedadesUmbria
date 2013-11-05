@@ -22,7 +22,7 @@
     <string name="error_wrong_login_data_title">Datos de login incorrectos.</string>
     <string name="error_wrong_login_data_body">Por favor, verifique que ha introducido correctamente su nombre de usuario y su contraseña.</string>
     <string name="error_parse_title">Problema con el parseo.</string>
-    <string name="error_parse_body">Por favor, informe al desarrollador de este error.</string>
+    <string name="error_parse_body">Si persiste a lo largo del día, por favor, informe al desarrollador de este error.</string>
     <!--  -->
     <string name="notification_news_title">Hay Novedades en CU</string>
     <string name="notification_error_message_long">No pude conectar con Comunidad Umbría. Por favor, revisa tus datos de acceso y tu conexión</string>
