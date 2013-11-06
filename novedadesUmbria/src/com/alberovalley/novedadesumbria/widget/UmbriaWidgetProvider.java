@@ -173,7 +173,7 @@ public class UmbriaWidgetProvider extends AppWidgetProvider {
                 }
 
                 String notificationText = "";
-                if (data.isThereAnythingNew()) {
+                if (data.isThereAnythingNew(storyteller, player, vip, privateMessages)) {
 				    notificationText = data.getLongNoticeText(uc, context.getApplicationContext());
 				    AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
 				} else {

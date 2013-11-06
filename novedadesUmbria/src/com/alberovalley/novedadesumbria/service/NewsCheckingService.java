@@ -86,6 +86,7 @@ public class NewsCheckingService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		// se pueden extraer extras del intent
 		AlberoLog.v(this, ".onHandleIntent");
+		AlberoLog.v(getClass().getSimpleName() + ".onHandleIntent player= " + player);
 		if (user.equalsIgnoreCase("") || pass.equalsIgnoreCase("")) {
 			// Si faltan datos de login, mostrar un error
 			AlberoLog.v(getClass().getSimpleName() + ".onHandleIntent faltan datos config, llamando a Settings");
@@ -172,7 +173,7 @@ public class NewsCheckingService extends IntentService {
 			AlberoLog.v(this, ".publishResults notificacion: ");
 			Notification noti = null;
 			try {
-				if (umbriadata.isThereAnythingNew()) {
+				if (umbriadata.isThereAnythingNew(storyteller, player, vip, privateMessages)) {
 					// avoid unnecessary notificaations when there's no news
 					AlberoLog.v(this, ".publishResults hay algo que notificar: ");
 					noti = createNotificationForNews(umbriadata);

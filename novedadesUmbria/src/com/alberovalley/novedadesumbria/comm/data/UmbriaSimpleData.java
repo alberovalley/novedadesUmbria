@@ -145,18 +145,18 @@ public class UmbriaSimpleData implements UmbriaData {
 	}
 
 	@Override
-	public boolean isThereAnythingNew() {
-		AlberoLog.d("UmbriaSimpleData.isThereSomethingNew: " +
+	public boolean isThereAnythingNew(boolean storyteller, boolean player, boolean vip, boolean privateMessages) {
+		AlberoLog.d("UmbriaSimpleData.isThereAnythingNew: " +
 				"playerMessages["+playerMessages+"]; " +
 				"storytellerMessages["+storytellerMessages+"]; " +
 				"vipMessages["+vipMessages+"]; " +
 				"privateMessages["+privateMessages+"]" );
 		return (
-				this.playerMessages > 0 ||
-				this.storytellerMessages > 0 ||
-				this.vipMessages > 0 ||
-				this.privateMessages > 0
-				);
+				( this.playerMessages > 0 && player ) ||
+				( this.storytellerMessages > 0 && storyteller )||
+				( this.vipMessages > 0 && vip ) ||
+				( this.privateMessages > 0 && privateMessages )
+				); 
 	}
 
 	@Override
@@ -165,7 +165,9 @@ public class UmbriaSimpleData implements UmbriaData {
 		if(this.errorFlag){
 			shortText = errorMessageTitle;
 		}else{
-			if (isThereAnythingNew()){
+			//boolean storyteller, boolean player, boolean vip, boolean privateMessages
+			if (isThereAnythingNew(config.isNotifyStorytellerMessages(), config.isNotifyPlayerMessages(), 
+					config.isNotifyVipMessages(), config.isNotifyPrivateMessages())){
 				shortText = ctx.getResources().getString(R.string.notification_news_title);
 			}else{
 				// if this is true, there was no new messages, so use the empty message

@@ -56,9 +56,14 @@ public interface UmbriaData extends Parcelable{
 	
 	/**
 	 * 
+	 * @param storyteller to count storyteller messages as new messages
+	 * @param player to count player messages as new messages
+	 * @param vip to count vip messages as new messages
+	 * @param privateMessages to count private messages as new messages
 	 * @return whether there are messages waiting to be read
 	 */
-	boolean isThereAnythingNew();
+	
+	boolean isThereAnythingNew(boolean storyteller, boolean player, boolean vip, boolean privateMessages);
 	
 	/**
 	 * Creates the title for the notifications

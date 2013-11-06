@@ -8,8 +8,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.alberovalley.novedadesumbria.R;
@@ -93,7 +95,19 @@ public class UmbriaMiniWidgetProvider extends AppWidgetProvider {
                 }
 
                 int miniIcon = 0;
-                if (data.isThereAnythingNew()) {
+                
+                boolean storyteller;
+            	boolean player;
+            	boolean vip;
+            	boolean privateMessages;
+            	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            	storyteller = sharedPrefs.getBoolean("cb_msg_Narrador", false);
+        		vip = sharedPrefs.getBoolean("cb_msg_VIP", false);
+        		privateMessages = sharedPrefs.getBoolean("cb_msg_Privado", false);
+        		player = sharedPrefs.getBoolean("cb_msg_Jugador", false);
+                
+                
+                if (data.isThereAnythingNew(storyteller, player, vip, privateMessages)) {
 				    miniIcon = R.drawable.ic_mini_widget_on;
 				    AlberoLog.v(this, ".BroadcastReceiver hay Novedades");
 				} else {

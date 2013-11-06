@@ -110,17 +110,18 @@ public class UmbriaNaeinData implements UmbriaData {
 	}
 
 	@Override
-	public boolean isThereAnythingNew() {
+	public boolean isThereAnythingNew(boolean storyteller, boolean player, boolean vip, boolean privateMessages) {
 		int playerMessages = getPlayerMessageCount();
 		int storytellerMessages = getStorytellerMessageCount(); 
 		int vipMessages = getVIPMessageCount();
 		
 		return (
-				playerMessages != 0 ||
-				storytellerMessages != 0 ||
-				vipMessages != 0 ||
-				this.privateMessages != 0
-				);
+				( playerMessages > 0 && player ) ||
+				( storytellerMessages > 0 && storyteller )||
+				( vipMessages > 0 && vip ) ||
+				( this.privateMessages > 0 && privateMessages )
+				); 
+		
 	}
 
 	@Override
