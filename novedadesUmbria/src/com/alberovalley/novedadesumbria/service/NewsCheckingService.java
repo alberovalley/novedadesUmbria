@@ -179,17 +179,22 @@ public class NewsCheckingService extends IntentService {
 					noti = createNotificationForNews(umbriadata);
 					// Hide the notification after its selected
 					noti.flags |= Notification.FLAG_AUTO_CANCEL;
+				}else{
+					// create null notification to fire up a cancellAll
+					noti = null;
 				}
 
 			} finally {
-
+				NotificationManager notificationManager =
+						(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 				if (noti != null) {
-					NotificationManager notificationManager =
-							(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+					
 					AlberoLog.v(this, ".publishResults lanzar notificación ");
 					notificationManager.notify(0, noti);
-				} else {
-					AlberoLog.v(this, ".publishResults ¿por qué llega aquí un noti null");
+				} else { 
+					// clear notifications that may have been left behind since there are no news
+					notificationManager.cancelAll();
+					AlberoLog.v(this, ".publishResults cancelo notificaciones");
 				}
 			}
 
